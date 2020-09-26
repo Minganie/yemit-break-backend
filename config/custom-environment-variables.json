@@ -1,0 +1,6 @@
+{
+  "dbConfig":{
+    "user": "MONGO_UN",
+    "password": "MONGO_PW"
+  }
+}

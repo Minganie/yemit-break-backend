@@ -15,6 +15,7 @@ const app = express();
 process.on("unhandledRejection", (e) => {
   throw e;
 });
+require("./startup/db")();
 
 // middleware
 app.use(logger("dev"));
