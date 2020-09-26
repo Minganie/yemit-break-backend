@@ -1,0 +1,32 @@
+#!/usr/bin/env node
+
+/**
+ * Module dependencies.
+ */
+
+const app = require('../app');
+const debug = require('debug')('ybbe:server');
+const fs = require('fs');
+const http = require('http');
+const https = require('https');
+
+/**
+ * Create server.
+ */
+
+const httpServer = http.createServer(app);
+const httpsServer = https.createServer({
+  key: fs.readFileSync("./key.pem"),
+  cert: fs.readFileSync("./cert.pem"),
+  passphrase: process.env.YBBE_CERT_KEY
+}, app);
+
+/**
+ * Listen on provided port, on all network interfaces.
+ */
+httpServer.listen(80, () => {
+  debug("http server listening on port 80");
+});
+httpsServer.listen(443, () => {
+  debug("https server listening on port 443");
+});
