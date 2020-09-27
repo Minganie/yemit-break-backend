@@ -43,7 +43,7 @@ const logout = (req, res, next) => {
 
 const toon = (req, res, next) => {
   const validationRule = {
-    name: "alpha_dash|required|between:3,50",
+    name: "sane_string|required",
     physical: "integer|required|between:0,4",
     magical: "integer|required|between:0,4",
     leadership: "integer|required|between:0,4",

@@ -11,6 +11,7 @@ module.exports = () => {
       useNewUrlParser: true,
       useUnifiedTopology: true,
       useCreateIndex: true,
+      useFindAndModify: false,
     })
     .then(() => {
       debug("Successfully connected to Mongo");

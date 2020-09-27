@@ -8,6 +8,7 @@ const fourohfour = require("./middleware/fourohfour");
 const jsonErrors = require("./middleware/jsonErrors");
 const requireHttps = require("./middleware/requireHttps");
 
+const toonsRouter = require("./routes/toons");
 const usersRouter = require("./routes/users");
 
 const app = express();
@@ -24,6 +25,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(requireHttps);
 
 // routes
+app.use("/api/toons", toonsRouter);
 app.use("/api/users", usersRouter);
 
 // errors

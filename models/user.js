@@ -22,7 +22,10 @@ const schema = new mongoose.Schema({
 });
 schema.methods.getJwt = function () {
   const jwtConfig = config.get("jwtConfig");
-  return jwt.sign(_.pick(this, ["email", "permissions"]), jwtConfig.secret);
+  return jwt.sign(
+    _.pick(this, ["_id", "email", "permissions"]),
+    jwtConfig.secret
+  );
 };
 
 const User = mongoose.model("User", schema);

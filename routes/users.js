@@ -62,7 +62,6 @@ router.post("/login", validate.login, async (req, res, next) => {
 
     const payload = _.pick(user, ["email", "permissions"]);
     payload.jwt = user.getJwt();
-    debug(payload);
 
     res.status(200).send(payload);
   } catch (ex) {
