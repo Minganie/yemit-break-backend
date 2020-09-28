@@ -1,4 +1,3 @@
-const debug = require("debug")("ybbe:weapon-model");
 const mongoose = require("mongoose");
 
 const schema = new mongoose.Schema({
@@ -31,12 +30,8 @@ const schema = new mongoose.Schema({
     type: Number,
     required: true,
   },
-  hp: {
-    type: Number,
-    required: true,
-  },
 });
 
-const Trait = mongoose.model("Trait", schema);
+const Aptitude = mongoose.model("Aptitude", schema);
 
-module.exports = Trait;
+module.exports = Aptitude;

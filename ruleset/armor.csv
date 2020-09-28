@@ -1,0 +1,5 @@
+"name","hp","dodging","physical"
+"None",0,0,0
+"Light",10,-100,1
+"Medium",20,-200,2
+"Heavy",30,-300,3

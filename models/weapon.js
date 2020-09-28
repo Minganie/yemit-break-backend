@@ -7,20 +7,35 @@ const schema = new mongoose.Schema({
     required: true,
     unique: true,
   },
-  hp: {
+  smashing: {
     type: Number,
-    min: 0,
-    max: 4,
+    required: true,
   },
   dodging: {
     type: Number,
-    min: 0,
-    max: 4,
+    required: true,
   },
-  physique: {
+  entropy: {
     type: Number,
+    required: true,
+  },
+  harmony: {
+    type: Number,
+    required: true,
+  },
+  hp: {
+    type: Number,
+    required: true,
+  },
+  moxie: {
+    type: Number,
+    required: true,
+  },
+  hands: {
+    type: Number,
+    required: true,
     min: 0,
-    max: 4,
+    max: 2,
   },
 });
 

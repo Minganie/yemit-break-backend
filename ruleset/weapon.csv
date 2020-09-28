@@ -1,0 +1,24 @@
+name,smashing,dodging,entropy,harmony,hp,moxie,hands
+Empty,0,0,0,0,0,0,0
+Unarmed,0,100,0,0,0,0,1
+One Handed Sword,150,0,0,0,0,0,1
+Shield,0,0,0,0,15,0,1
+Dagger,100,50,0,0,0,0,1
+Brass Knuckle,100,50,0,0,0,0,1
+Great Axe,300,0,0,0,0,0,2
+Great Sword,300,0,0,0,0,0,2
+Gunblade,300,0,0,0,0,0,2
+Lance,200,100,0,0,0,0,2
+Katana,200,100,0,0,0,0,2
+Bow,200,100,0,0,0,0,2
+Long Barrel Musketoon,200,100,0,0,0,0,2
+Short Barrel Musketoon,100,50,0,0,0,0,1
+Chakram,100,50,0,0,0,0,1
+Arcanist's Grimoire,0,0,150,150,0,0,2
+Astrological Globe,0,0,0,300,0,0,2
+Conjurer's Wand,0,0,0,150,0,0,1
+Conjurer's Staff,0,0,0,300,0,0,2
+Thaumaturge Staff,0,0,300,0,0,0,2
+Thaumaturge Wand,0,0,150,0,0,0,1
+Red Mage Rapier,0,0,150,0,0,0,1
+Red Mage Focus,0,0,50,100,0,0,1

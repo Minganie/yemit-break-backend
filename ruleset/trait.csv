@@ -1,0 +1,9 @@
+"name","smashing","dodging","entropy","harmony","moxie","wit","hp"
+"Resilient",0,-200,0,0,0,0,20
+"Agent of Chaos",0,0,200,-200,0,0,0
+"Harmonic Resonance",0,0,-200,200,0,0,0
+"Inspiring",0,0,0,0,200,-200,0
+"Strategist",0,0,0,0,-200,200,0
+"Evasive",-200,200,0,0,0,0,0
+"Balanced",0,0,0,0,0,0,0
+"Glass Cannon",200,0,0,0,0,0,-20

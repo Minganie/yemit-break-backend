@@ -61,9 +61,36 @@ const toon = (req, res, next) => {
   });
 };
 
+const fight = (req, res, next) => {
+  const validationRule = {
+    name: "sane_string_par|required",
+    toons: "array",
+    enemies: "array",
+    "enemies.*.name": "sane_string_par|required",
+    "enemies.*.dc": "integer|required|min:0",
+    "enemies.*.ab": "integer|required|min:0",
+    "enemies.*.hp": "integer|required|min:0",
+  };
+  validator(req.body, validationRule, {}, (err, status) => {
+    if (!status) {
+      next(new YbbeError(err.firstMessage, 400, err.all()));
+    } else {
+      const looksLikeMongoIds = (acc, cur) => acc && /[a-z0-9]{24}/.test(cur);
+      if (!req.body.toons.reduce(looksLikeMongoIds, true))
+        return next(
+          new YbbeError("Toons must be appropriate ids", 400, {
+            toons: "Toons must be appropriate ids",
+          })
+        );
+      next();
+    }
+  });
+};
+
 module.exports = {
   registration,
   login,
   logout,
   toon,
+  fight,
 };

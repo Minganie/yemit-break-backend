@@ -1,26 +1,31 @@
-const debug = require("debug")("ybbe:armor-model");
 const mongoose = require("mongoose");
 
 const schema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
-    unique: true,
+  },
+  ab: {
+    type: Number,
+    required: true,
+    min: 0,
+  },
+  dc: {
+    type: Number,
+    required: true,
+    min: 0,
   },
   hp: {
     type: Number,
     required: true,
+    min: 0,
   },
-  dodging: {
-    type: Number,
-    required: true,
-  },
-  physical: {
+  current_hp: {
     type: Number,
     required: true,
   },
 });
 
-const Armor = mongoose.model("Armor", schema);
+const Enemy = mongoose.model("Enemy", schema);
 
-module.exports = Armor;
+module.exports = Enemy;
