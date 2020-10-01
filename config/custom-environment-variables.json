@@ -1,7 +1,7 @@
 {
   "dbConfig":{
-    "user": "MONGO_UN",
-    "password": "MONGO_PW"
+    "user": "YBBE_MONGO_UN",
+    "password": "YBBE_MONGO_PW"
   },
   "jwtConfig": {
     "secret": "YBBE_JWT_SECRET"
