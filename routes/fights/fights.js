@@ -1,4 +1,4 @@
-const debug = require("debug")("ybbe:toons");
+const debug = require("debug")("ybbe:fights");
 const express = require("express");
 const mongoose = require("mongoose");
 const router = express.Router();
@@ -18,8 +18,45 @@ router.get("/", async (req, res, next) => {
     next(e);
   }
 });
+router.get("/:id", validate.idParamIsValidMongoId, async (req, res, next) => {
+  try {
+    const fight = await Fight.findOne({ _id: req.params.id });
+    if (!fight)
+      return next(
+        new YbbeError("Unable to find this fight.", 404, { id: req.params.id })
+      );
+    res.send(fight);
+  } catch (e) {
+    next(e);
+  }
+});
 
-const createFight = async (bodyFight, session) => {
+router.post(
+  "/:id/next",
+  [auth.isDm, validate.idParamIsValidMongoId],
+  async (req, res, next) => {
+    try {
+      let fight = await Fight.findOne({ _id: req.params.id });
+      if (!fight)
+        return next(
+          new YbbeError("Unable to find this fight.", 404, {
+            id: req.params.id,
+          })
+        );
+      if (fight.user.toString() !== req.user._id)
+        return next(
+          new YbbeError("This isn't your fight.", 403, { id: req.params.id })
+        );
+      fight.advance();
+      fight = await fight.save();
+      res.send(fight);
+    } catch (e) {
+      next(e);
+    }
+  }
+);
+
+const createFight = async (bodyFight, user, session) => {
   const enemyIds = [];
   for (const bodyEnemy of bodyFight.enemies) {
     const amended = {
@@ -31,7 +68,11 @@ const createFight = async (bodyFight, session) => {
     await enemy.save({ session });
   }
 
-  const f = { ..._.pick(bodyFight, ["name", "toons"]), enemies: enemyIds };
+  const f = {
+    ..._.pick(bodyFight, ["name", "toons"]),
+    enemies: enemyIds,
+    user: user._id,
+  };
   return new Fight(f).save({ session });
 };
 
@@ -40,7 +81,7 @@ router.post("/", [auth.isDm, validate.fight], async (req, res, next) => {
     const session = await mongoose.startSession();
     session.startTransaction();
     try {
-      const fight = await createFight(req.body, session);
+      const fight = await createFight(req.body, req.user, session);
       res.status(201).send(fight);
       await session.commitTransaction();
     } catch (e) {

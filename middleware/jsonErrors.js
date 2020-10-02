@@ -2,7 +2,7 @@ const debug = require("debug")("ybbe:error");
 const ybbeLogger = require("../utils/ybbe-logger");
 
 module.exports = (err, req, res, next) => {
-  debug("In the final error handler");
+  debug("In the final error handler", err);
 
   // set locals, only providing error in development
   res.locals.message = err.message;

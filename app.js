@@ -8,7 +8,7 @@ const fourohfour = require("./middleware/fourohfour");
 const jsonErrors = require("./middleware/jsonErrors");
 const requireHttps = require("./middleware/requireHttps");
 
-const fightsRouter = require("./routes/fights");
+const fightsRouter = require("./routes/fights/fights");
 const toonsRouter = require("./routes/toons");
 const usersRouter = require("./routes/users");
 

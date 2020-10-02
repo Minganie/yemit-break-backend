@@ -1,3 +1,4 @@
+const debug = require("debug")("ybbe:fight-model");
 const mongoose = require("mongoose");
 
 const schema = new mongoose.Schema(
@@ -42,9 +43,30 @@ const schema = new mongoose.Schema(
       required: true, // required but can be empty array
       default: [],
     },
+    user: {
+      type: mongoose.ObjectId,
+      required: true,
+      ref: "User",
+    },
   },
   { autoCreate: true }
 );
+schema.methods.advance = function () {
+  switch (this.phase) {
+    case "Support":
+      this.phase = "Action";
+      break;
+    case "Action":
+      this.phase = "Defense";
+      break;
+    case "Defense":
+      this.phase = "Support";
+      this.round = this.round + 1;
+      break;
+    default:
+      throw new Error(`Can't imagine what phase you're on "${this.phase}"`);
+  }
+};
 
 const Fight = mongoose.model("Fight", schema);
 
