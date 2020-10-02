@@ -1,5 +1,6 @@
 const debug = require("debug")("ybbe:toons");
 const express = require("express");
+const mongoose = require("mongoose");
 const router = express.Router();
 const _ = require("lodash");
 
@@ -18,24 +19,36 @@ router.get("/", async (req, res, next) => {
   }
 });
 
+const createFight = async (bodyFight, session) => {
+  const enemyIds = [];
+  for (const bodyEnemy of bodyFight.enemies) {
+    const amended = {
+      ..._.pick(bodyEnemy, ["name", "dc", "ab", "hp"]),
+      current_hp: bodyEnemy.hp,
+    };
+    const enemy = new Enemy(amended);
+    enemyIds.push(enemy._id);
+    await enemy.save({ session });
+  }
+
+  const f = { ..._.pick(bodyFight, ["name", "toons"]), enemies: enemyIds };
+  return new Fight(f).save({ session });
+};
+
 router.post("/", [auth.isDm, validate.fight], async (req, res, next) => {
   try {
-    const enemyIds = [];
-    const enemyPromises = [];
-    for (const bodyEnemy of req.body.enemies) {
-      const amended = _.pick(bodyEnemy, ["name", "dc", "ab", "hp"]);
-      amended.current_hp = amended.hp;
-      const enemy = new Enemy(amended);
-      enemyIds.push(enemy._id);
-      enemyPromises.push(enemy.save());
+    const session = await mongoose.startSession();
+    session.startTransaction();
+    try {
+      const fight = await createFight(req.body, session);
+      res.status(201).send(fight);
+      await session.commitTransaction();
+    } catch (e) {
+      await session.abortTransaction();
+      throw e;
+    } finally {
+      session.endSession();
     }
-    await Promise.all(enemyPromises);
-
-    const f = _.pick(req.body, ["name", "toons"]);
-    f.enemies = enemyIds;
-
-    const fight = await new Fight(f).save();
-    res.status(201).send(fight);
   } catch (e) {
     next(e);
   }
