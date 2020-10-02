@@ -40,49 +40,53 @@ router.post("/", [auth.isPlayer, validate.toon], async (req, res, next) => {
   }
 });
 
-router.put("/:id", [auth.isPlayer, validate.toon], async (req, res, next) => {
-  try {
-    const toon = await Toon.findOne({ _id: req.params.id });
-    if (!toon)
-      return next(
-        new YbbeError("Can't find that toon.", 404, { id: req.params.id })
-      );
+router.put(
+  "/:id",
+  [auth.isPlayer, validate.idParamIsValidMongoId, validate.toon],
+  async (req, res, next) => {
+    try {
+      const toon = await Toon.findOne({ _id: req.params.id });
+      if (!toon)
+        return next(
+          new YbbeError("Can't find that toon.", 404, { id: req.params.id })
+        );
 
-    if (toon.user.toString() !== req.user._id)
-      return next(
-        new YbbeError("This isn't your toon.", 403, { id: req.params.id })
-      );
+      if (toon.user.toString() !== req.user._id)
+        return next(
+          new YbbeError("This isn't your toon.", 403, { id: req.params.id })
+        );
 
-    const whitelisted = _.pick(req.body, [
-      "name",
-      "physical",
-      "magical",
-      "leadership",
-      "main_hand",
-      "off_hand",
-      "trait",
-      "armor",
-    ]);
-    const updated = await Toon.findByIdAndUpdate(req.params.id, whitelisted, {
-      new: true,
-    })
-      .populate("main_hand")
-      .populate("off_hand")
-      .populate("trait")
-      .populate("armor");
-    res.send(updated);
-  } catch (e) {
-    if (e.code && e.code === 11000) {
-      next(
-        new YbbeError("A toon with this name already exists.", 400, {
-          name: ["A toon with this name already exists."],
-        })
-      );
-    } else next(e);
+      const whitelisted = _.pick(req.body, [
+        "name",
+        "physical",
+        "magical",
+        "leadership",
+        "main_hand",
+        "off_hand",
+        "trait",
+        "armor",
+      ]);
+      const updated = await Toon.findByIdAndUpdate(req.params.id, whitelisted, {
+        new: true,
+      })
+        .populate("main_hand")
+        .populate("off_hand")
+        .populate("trait")
+        .populate("armor");
+      res.send(updated);
+    } catch (e) {
+      if (e.code && e.code === 11000) {
+        next(
+          new YbbeError("A toon with this name already exists.", 400, {
+            name: ["A toon with this name already exists."],
+          })
+        );
+      } else next(e);
+    }
   }
-});
+);
 
-router.get("/:id", async (req, res, next) => {
+router.get("/:id", validate.idParamIsValidMongoId, async (req, res, next) => {
   try {
     const toon = await Toon.findOne({ _id: req.params.id })
       .populate("main_hand")

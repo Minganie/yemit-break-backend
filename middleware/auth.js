@@ -61,10 +61,10 @@ const isDm = (req, res, next) => {
     req.user = getUserFromToken(req.header("x-auth-token"));
     if (!req.user.permissions.includes("DM"))
       throw new YbbeError(
-        "You must be logged in as a player to access this resource.",
+        "You must be logged in as a DM to access this resource.",
         403,
         {
-          token: ["You must be logged in as a player to access this resource."],
+          token: ["You must be logged in as a DM to access this resource."],
         }
       );
 

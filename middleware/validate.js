@@ -1,4 +1,5 @@
 const debug = require("debug")("ybbe:input-validation");
+const mongoose = require("mongoose");
 const validator = require("../utils/validator");
 const YbbeError = require("../utils/YbbeError");
 
@@ -47,10 +48,10 @@ const toon = (req, res, next) => {
     physical: "integer|required|between:0,4",
     magical: "integer|required|between:0,4",
     leadership: "integer|required|between:0,4",
-    main_hand: "alpha_num|required|size:24",
-    off_hand: "alpha_num|required|size:24",
-    trait: "alpha_num|required|size:24",
-    armor: "alpha_num|required|size:24",
+    main_hand: "mongo_id|required",
+    off_hand: "mongo_id|required",
+    trait: "mongo_id|required",
+    armor: "mongo_id|required",
   };
   validator(req.body, validationRule, {}, (err, status) => {
     if (!status) {
@@ -75,8 +76,8 @@ const fight = (req, res, next) => {
     if (!status) {
       next(new YbbeError(err.firstMessage, 400, err.all()));
     } else {
-      const looksLikeMongoIds = (acc, cur) => acc && /[a-z0-9]{24}/.test(cur);
-      if (!req.body.toons.reduce(looksLikeMongoIds, true))
+      const validMongoIds = (acc, cur) => acc && mongoose.isValidObjectId(cur);
+      if (!req.body.toons.reduce(validMongoIds, true))
         return next(
           new YbbeError("Toons must be appropriate ids", 400, {
             toons: "Toons must be appropriate ids",
@@ -87,10 +88,16 @@ const fight = (req, res, next) => {
   });
 };
 
+const idParamIsValidMongoId = (req, res, next) => {
+  if (mongoose.isValidObjectId(req.params.id)) next();
+  else next(new YbbeError("Invalid id", 400, { id: "Invalid id" }));
+};
+
 module.exports = {
   registration,
   login,
   logout,
   toon,
   fight,
+  idParamIsValidMongoId,
 };

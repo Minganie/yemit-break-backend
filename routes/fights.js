@@ -9,6 +9,15 @@ const Fight = require("../models/fight");
 const validate = require("../middleware/validate");
 const YbbeError = require("../utils/YbbeError");
 
+router.get("/", async (req, res, next) => {
+  try {
+    const fights = await Fight.find({}).sort("name");
+    res.send(fights);
+  } catch (e) {
+    next(e);
+  }
+});
+
 router.post("/", [auth.isDm, validate.fight], async (req, res, next) => {
   try {
     const enemyIds = [];

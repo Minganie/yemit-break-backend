@@ -1,4 +1,5 @@
 const debug = require("debug")("ybbe:validator");
+const mongoose = require("mongoose");
 const Validator = require("validatorjs");
 
 const common = require("../yemit-break-common/common.json");
@@ -17,6 +18,14 @@ Validator.register(
     return new RegExp(common.regexes.fight).test(value);
   },
   "The :attribute must be 3 to 200 characters long, and may only contain letters, numbers, dash, underscore, space, apostrophe or parentheses."
+);
+
+Validator.register(
+  "mongo_id",
+  (value, requirement, attribute) => {
+    return mongoose.isValidObjectId(value);
+  },
+  "The :attribute must be a valid Mongo object id"
 );
 
 const validator = (body, rules, customMessages, callback) => {
