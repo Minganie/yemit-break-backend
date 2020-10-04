@@ -62,12 +62,18 @@ const schema = new mongoose.Schema({
     covering: mongoose.ObjectId,
     is_covered: Boolean,
     covered_by: mongoose.ObjectId,
+
     is_inspiring: Boolean,
     inspiring: mongoose.ObjectId,
     inspiring_to: String,
     is_inspired: Boolean,
     inspired_by: mongoose.ObjectId,
     inspired_to: String,
+
+    is_guarding: Boolean,
+    guarding: mongoose.ObjectId,
+    is_guarded: Boolean,
+    guarded_by: mongoose.ObjectId,
   },
 });
 

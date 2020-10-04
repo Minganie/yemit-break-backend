@@ -1,5 +1,6 @@
 const Cover = require("../models/actions/support/Cover");
 const InspireAction = require("../models/actions/support/InspireAction");
+const InspireGuard = require("../models/actions/support/InspireGuard");
 const Toon = require("../models/toon");
 
 const populate = async (req, res, next) => {
@@ -12,6 +13,9 @@ const populate = async (req, res, next) => {
       return next();
     case "Inspire Action":
       req.action = new InspireAction(action);
+      return next();
+    case "Inspire Guard":
+      req.action = new InspireGuard(action);
       return next();
     default:
       next(
