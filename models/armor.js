@@ -1,7 +1,7 @@
 const debug = require("debug")("ybbe:armor-model");
 const mongoose = require("mongoose");
 
-const schema = new mongoose.Schema({
+const armorSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
@@ -21,6 +21,6 @@ const schema = new mongoose.Schema({
   },
 });
 
-const Armor = mongoose.model("Armor", schema);
+const Armor = mongoose.model("Armor", armorSchema);
 
-module.exports = Armor;
+module.exports = { Armor, armorSchema };

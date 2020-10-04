@@ -2,10 +2,11 @@ const bcrypt = require("bcrypt");
 const debug = require("debug")("ybbe:users router");
 const express = require("express");
 const router = express.Router();
+const _ = require("lodash");
+
 const User = require("../models/user");
 const validate = require("../middleware/validate");
 const YbbeError = require("../utils/YbbeError");
-const _ = require("lodash");
 
 router.post("/", validate.registration, async (req, res, next) => {
   try {

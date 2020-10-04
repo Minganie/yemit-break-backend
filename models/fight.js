@@ -1,6 +1,8 @@
 const debug = require("debug")("ybbe:fight-model");
 const mongoose = require("mongoose");
 
+const Toon = require("./toon");
+
 const schema = new mongoose.Schema(
   {
     name: {
@@ -51,20 +53,29 @@ const schema = new mongoose.Schema(
   },
   { autoCreate: true }
 );
-schema.methods.advance = function () {
-  switch (this.phase) {
-    case "Support":
-      this.phase = "Action";
-      break;
-    case "Action":
-      this.phase = "Defense";
-      break;
-    case "Defense":
-      this.phase = "Support";
-      this.round = this.round + 1;
-      break;
-    default:
-      throw new Error(`Can't imagine what phase you're on "${this.phase}"`);
+schema.methods.advance = async function () {
+  try {
+    switch (this.phase) {
+      case "Support":
+        this.phase = "Action";
+        break;
+      case "Action":
+        this.phase = "Defense";
+        break;
+      case "Defense":
+        this.phase = "Support";
+        this.round = this.round + 1;
+        for (const toonId of this.toons) {
+          const toon = await Toon.findOne({ _id: toonId });
+          toon.resetStatuses();
+          await toon.save();
+        }
+        break;
+      default:
+        throw new Error(`Can't imagine what phase you're on "${this.phase}"`);
+    }
+  } catch (e) {
+    throw e;
   }
 };
 

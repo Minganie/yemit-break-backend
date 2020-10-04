@@ -4,11 +4,13 @@ const mongoose = require("mongoose");
 const router = express.Router();
 const _ = require("lodash");
 
-const auth = require("../middleware/auth");
-const Enemy = require("../models/enemy");
-const Fight = require("../models/fight");
-const validate = require("../middleware/validate");
-const YbbeError = require("../utils/YbbeError");
+const auth = require("../../middleware/auth");
+const Enemy = require("../../models/enemy");
+const Fight = require("../../models/fight");
+const advance = require("./advance");
+const support = require("./support");
+const validate = require("../../middleware/validate");
+const YbbeError = require("../../utils/YbbeError");
 
 router.get("/", async (req, res, next) => {
   try {
@@ -30,31 +32,6 @@ router.get("/:id", validate.idParamIsValidMongoId, async (req, res, next) => {
     next(e);
   }
 });
-
-router.post(
-  "/:id/next",
-  [auth.isDm, validate.idParamIsValidMongoId],
-  async (req, res, next) => {
-    try {
-      let fight = await Fight.findOne({ _id: req.params.id });
-      if (!fight)
-        return next(
-          new YbbeError("Unable to find this fight.", 404, {
-            id: req.params.id,
-          })
-        );
-      if (fight.user.toString() !== req.user._id)
-        return next(
-          new YbbeError("This isn't your fight.", 403, { id: req.params.id })
-        );
-      fight.advance();
-      fight = await fight.save();
-      res.send(fight);
-    } catch (e) {
-      next(e);
-    }
-  }
-);
 
 const createFight = async (bodyFight, user, session) => {
   const enemyIds = [];
@@ -94,5 +71,8 @@ router.post("/", [auth.isDm, validate.fight], async (req, res, next) => {
     next(e);
   }
 });
+
+router.use("/:id/next", advance);
+router.use("/:id/support", support);
 
 module.exports = router;

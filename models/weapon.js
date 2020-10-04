@@ -1,7 +1,7 @@
 const debug = require("debug")("ybbe:weapon-model");
 const mongoose = require("mongoose");
 
-const schema = new mongoose.Schema({
+const weaponSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
@@ -39,6 +39,6 @@ const schema = new mongoose.Schema({
   },
 });
 
-const Weapon = mongoose.model("Weapon", schema);
+const Weapon = mongoose.model("Weapon", weaponSchema);
 
-module.exports = Weapon;
+module.exports = { Weapon, weaponSchema };

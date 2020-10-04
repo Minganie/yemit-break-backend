@@ -10,26 +10,24 @@ const YbbeError = require("../utils/YbbeError");
 
 router.post("/", [auth.isPlayer, validate.toon], async (req, res, next) => {
   try {
-    const whitelisted = _.pick(req.body, [
-      "name",
-      "physical",
-      "magical",
-      "leadership",
-      "main_hand",
-      "off_hand",
-      "trait",
-      "armor",
-    ]);
-    whitelisted.user = req.user._id;
+    const whitelisted = {
+      ..._.pick(req.body, [
+        "name",
+        "physical",
+        "magical",
+        "leadership",
+        "main_hand",
+        "off_hand",
+        "trait",
+        "armor",
+      ]),
+      user: req.user._id,
+    };
     let toon = new Toon(whitelisted);
     toon = await toon.save();
-    toon = await Toon.findOne({ name: toon.name })
-      .populate("main_hand")
-      .populate("off_hand")
-      .populate("trait")
-      .populate("armor");
     res.status(201).send(toon);
   } catch (e) {
+    debug(e);
     if (e.code && e.code === 11000) {
       next(
         new YbbeError("A toon with this name already exists.", 400, {
@@ -68,11 +66,7 @@ router.put(
       ]);
       const updated = await Toon.findByIdAndUpdate(req.params.id, whitelisted, {
         new: true,
-      })
-        .populate("main_hand")
-        .populate("off_hand")
-        .populate("trait")
-        .populate("armor");
+      });
       res.send(updated);
     } catch (e) {
       if (e.code && e.code === 11000) {
@@ -88,11 +82,7 @@ router.put(
 
 router.get("/:id", validate.idParamIsValidMongoId, async (req, res, next) => {
   try {
-    const toon = await Toon.findOne({ _id: req.params.id })
-      .populate("main_hand")
-      .populate("off_hand")
-      .populate("trait")
-      .populate("armor");
+    const toon = await Toon.findOne({ _id: req.params.id });
     if (!toon)
       return next(
         new YbbeError("Unable to find this toon.", 404, { id: req.params.id })
@@ -105,12 +95,7 @@ router.get("/:id", validate.idParamIsValidMongoId, async (req, res, next) => {
 
 router.get("/", async (req, res, next) => {
   try {
-    const toons = await Toon.find({})
-      .populate("main_hand")
-      .populate("off_hand")
-      .populate("trait")
-      .populate("armor")
-      .sort("name");
+    const toons = await Toon.find({}).sort("name");
     res.send(toons);
   } catch (e) {
     next(e);

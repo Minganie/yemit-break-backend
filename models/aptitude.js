@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const schema = new mongoose.Schema({
+const aptitudeSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
@@ -32,6 +32,6 @@ const schema = new mongoose.Schema({
   },
 });
 
-const Aptitude = mongoose.model("Aptitude", schema);
+const Aptitude = mongoose.model("Aptitude", aptitudeSchema);
 
-module.exports = Aptitude;
+module.exports = { Aptitude, aptitudeSchema };
