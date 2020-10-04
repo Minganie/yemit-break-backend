@@ -1,26 +1,18 @@
 const debug = require("debug")("ybbe:inspire-guard");
+const Action = require("../Action");
 const YbbeError = require("../../../utils/YbbeError");
 
-class InspireGuard {
+class InspireGuard extends Action {
   constructor(action) {
+    super();
     this.from = action.from;
     this.to = action.to;
     this.user = action.user;
   }
 
   validate() {
-    if (!this.from)
-      throw new YbbeError("Toon who is guarding must be specified", 400, {
-        from: "Toon who is guarding must be specified",
-      });
-    if (!this.to)
-      throw new YbbeError("Toon who is guarded must be specified", 400, {
-        to: "Toon who is guarded must be specified",
-      });
-    if (this.user._id !== this.from.user._id.toString())
-      throw new YbbeError("Toon who is guarding must be yours", 400, {
-        user: this.user._id,
-      });
+    this.validateFrom();
+    this.validateToPlayer();
     return true;
   }
   async apply() {

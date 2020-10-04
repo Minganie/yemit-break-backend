@@ -13,7 +13,7 @@ class Attack extends Offense {
   async validate() {
     try {
       this.validateFrom();
-      await this.validateTargets();
+      await this.validateToEnemies();
       return true;
     } catch (e) {
       throw e;

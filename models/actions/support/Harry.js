@@ -1,22 +1,17 @@
 const debug = require("debug")("ybbe:harry");
+const Action = require("../Action");
 const YbbeError = require("../../../utils/YbbeError");
 
-class Harry {
+class Harry extends Action {
   constructor(action) {
+    super();
     this.from = action.from;
     this.with = action.with;
     this.user = action.user;
   }
 
   validate() {
-    if (!this.from)
-      throw new YbbeError("Toon who is harrying must be specified", 400, {
-        from: "Toon who is harrying must be specified",
-      });
-    if (this.user._id !== this.from.user._id.toString())
-      throw new YbbeError("Toon who is harrying must be yours", 400, {
-        user: this.user._id,
-      });
+    this.validateFrom();
     const stats = ["Smashing", "Entropy"];
     if (!stats.includes(this.with))
       throw new YbbeError(

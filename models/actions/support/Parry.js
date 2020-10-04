@@ -1,21 +1,16 @@
 const debug = require("debug")("ybbe:parry");
+const Action = require("../Action");
 const YbbeError = require("../../../utils/YbbeError");
 
-class Parry {
+class Parry extends Action {
   constructor(action) {
+    super();
     this.from = action.from;
     this.user = action.user;
   }
 
   validate() {
-    if (!this.from)
-      throw new YbbeError("Toon who is parrying must be specified", 400, {
-        from: "Toon who is parrying must be specified",
-      });
-    if (this.user._id !== this.from.user._id.toString())
-      throw new YbbeError("Toon who is parrying must be yours", 400, {
-        user: this.user._id,
-      });
+    this.validateFrom();
     return true;
   }
   async apply() {

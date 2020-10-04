@@ -16,7 +16,7 @@ class Attack extends Offense {
   async validate() {
     try {
       this.validateFrom();
-      await this.validateTargets();
+      await this.validateToEnemies();
       if (this.roll < 0 || this.roll > 1000)
         throw new YbbeError(`${this.roll} is not a valid roll`, 400, {
           roll: `${this.roll} is not a valid roll`,
@@ -43,7 +43,6 @@ class Attack extends Offense {
     const stat = await this.findStat();
     const inspiration = await this.computeInspiration("Attack");
     this.bonusedRoll = this.roll + stat + inspiration;
-    debug(this.bonusedRoll);
     let dmg = Math.floor(this.bonusedRoll / 100);
     if (this.roll >= 900) dmg *= 2;
     return dmg;
