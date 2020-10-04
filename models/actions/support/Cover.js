@@ -27,6 +27,7 @@ class Cover {
       is_covering: true,
       covering: this.to._id,
     };
+    this.from.quickAction = "Cover";
     await this.from.save();
     this.to.statuses = {
       is_covered: true,

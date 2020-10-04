@@ -93,6 +93,16 @@ const idParamIsValidMongoId = (req, res, next) => {
   else next(new YbbeError("Invalid id", 400, { id: "Invalid id" }));
 };
 
+const toonHasNotSupported = (req, res, next) => {
+  if (req.action.from.quickAction !== null)
+    return next(
+      new YbbeError("You can't take more than one quick action per turn", 400, {
+        from: "You can't take more than one quick action per turn",
+      })
+    );
+  next();
+};
+
 module.exports = {
   registration,
   login,
@@ -100,4 +110,5 @@ module.exports = {
   toon,
   fight,
   idParamIsValidMongoId,
+  toonHasNotSupported,
 };

@@ -67,7 +67,7 @@ schema.methods.advance = async function () {
         this.round = this.round + 1;
         for (const toonId of this.toons) {
           const toon = await Toon.findOne({ _id: toonId });
-          toon.resetStatuses();
+          toon.resetRound();
           await toon.save();
         }
         break;

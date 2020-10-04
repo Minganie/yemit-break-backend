@@ -56,6 +56,7 @@ const schema = new mongoose.Schema({
     required: true,
     ref: "User",
   },
+  quickAction: String,
   statuses: {
     is_covering: Boolean,
     covering: mongoose.ObjectId,
@@ -71,7 +72,8 @@ schema.virtual("wit").get(async function () {
   return this.leadership * 100 + t.wit;
 });
 
-schema.methods.resetStatuses = function () {
+schema.methods.resetRound = function () {
+  this.quickAction = null;
   this.statuses.is_covering = false;
   this.statuses.covering = null;
   this.statuses.covered = false;

@@ -5,10 +5,16 @@ const router = express.Router({ mergeParams: true });
 
 const action = require("../../middleware/action");
 const auth = require("../../middleware/auth");
+const validate = require("../../middleware/validate");
 
 router.post(
   "/",
-  [auth.isPlayer, action.populate, action.validate],
+  [
+    auth.isPlayer,
+    action.populate,
+    action.validate,
+    validate.toonHasNotSupported,
+  ],
   async (req, res, next) => {
     try {
       await req.action.apply();
