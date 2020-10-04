@@ -26,12 +26,10 @@ class Cover {
     this.from.statuses.is_covering = true;
     this.from.statuses.covering = this.to._id;
     this.from.quickAction = "Cover";
-    debug("from", this.from.statuses);
     await this.from.save();
 
     this.to.statuses.is_covered = true;
     this.to.statuses.covered_by = this.from._id;
-    debug("to", this.to.statuses);
     await this.to.save();
   }
   async log() {
