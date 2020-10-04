@@ -77,6 +77,8 @@ const schema = new mongoose.Schema({
 
     is_harrying: Boolean,
     harrying_with: String,
+
+    is_parrying: Boolean,
   },
 });
 

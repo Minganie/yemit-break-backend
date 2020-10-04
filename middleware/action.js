@@ -2,6 +2,7 @@ const Cover = require("../models/actions/support/Cover");
 const Harry = require("../models/actions/support/Harry");
 const InspireAction = require("../models/actions/support/InspireAction");
 const InspireGuard = require("../models/actions/support/InspireGuard");
+const Parry = require("../models/actions/support/Parry");
 const Toon = require("../models/toon");
 
 const populate = async (req, res, next) => {
@@ -20,6 +21,9 @@ const populate = async (req, res, next) => {
       return next();
     case "Harry":
       req.action = new Harry(action);
+      return next();
+    case "Parry":
+      req.action = new Parry(action);
       return next();
     default:
       next(
