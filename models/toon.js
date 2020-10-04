@@ -60,8 +60,14 @@ const schema = new mongoose.Schema({
   statuses: {
     is_covering: Boolean,
     covering: mongoose.ObjectId,
-    covered: Boolean,
+    is_covered: Boolean,
     covered_by: mongoose.ObjectId,
+    is_inspiring: Boolean,
+    inspiring: mongoose.ObjectId,
+    inspiring_to: String,
+    is_inspired: Boolean,
+    inspired_by: mongoose.ObjectId,
+    inspired_to: String,
   },
 });
 
@@ -70,6 +76,13 @@ schema.plugin(require("mongoose-autopopulate"));
 schema.virtual("wit").get(async function () {
   const t = await Trait.findOne({ _id: this.trait });
   return this.leadership * 100 + t.wit;
+});
+
+schema.virtual("moxie").get(async function () {
+  const t = await Trait.findOne({ _id: this.trait });
+  const mh = await Weapon.findOne({ _id: this.main_hand });
+  const oh = await Weapon.findOne({ _id: this.off_hand });
+  return this.leadership * 100 + t.moxie + mh.moxie + oh.moxie;
 });
 
 schema.methods.resetRound = function () {

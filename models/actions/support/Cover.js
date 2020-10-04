@@ -23,16 +23,15 @@ class Cover {
     return true;
   }
   async apply() {
-    this.from.statuses = {
-      is_covering: true,
-      covering: this.to._id,
-    };
+    this.from.statuses.is_covering = true;
+    this.from.statuses.covering = this.to._id;
     this.from.quickAction = "Cover";
+    debug("from", this.from.statuses);
     await this.from.save();
-    this.to.statuses = {
-      is_covered: true,
-      covered_by: this.from._id,
-    };
+
+    this.to.statuses.is_covered = true;
+    this.to.statuses.covered_by = this.from._id;
+    debug("to", this.to.statuses);
     await this.to.save();
   }
   async log() {
