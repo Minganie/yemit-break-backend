@@ -57,6 +57,7 @@ const schema = new mongoose.Schema({
     ref: "User",
   },
   quickAction: String,
+  action: String,
   statuses: {
     is_covering: Boolean,
     covering: mongoose.ObjectId,
@@ -112,6 +113,7 @@ schema.virtual("entropy").get(async function () {
 
 schema.methods.resetRound = function () {
   this.quickAction = null;
+  this.action = null;
   this.statuses = {};
 };
 

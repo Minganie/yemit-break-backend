@@ -9,6 +9,7 @@ const Enemy = require("../../models/enemy");
 const Fight = require("../../models/fight");
 const advance = require("./advance");
 const support = require("./support");
+const offense = require("./offense");
 const validate = require("../../middleware/validate");
 const YbbeError = require("../../utils/YbbeError");
 
@@ -74,5 +75,6 @@ router.post("/", [auth.isDm, validate.fight], async (req, res, next) => {
 
 router.use("/:id/next", advance);
 router.use("/:id/support", support);
+router.use("/:id/offense", offense);
 
 module.exports = router;

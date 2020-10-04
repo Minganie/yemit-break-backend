@@ -103,6 +103,16 @@ const toonHasNotSupported = (req, res, next) => {
   next();
 };
 
+const toonHasNotActed = (req, res, next) => {
+  if (req.action.from.action !== null)
+    return next(
+      new YbbeError("You can't take more than one full action per turn", 400, {
+        from: "You can't take more than one full action per turn",
+      })
+    );
+  next();
+};
+
 module.exports = {
   registration,
   login,
@@ -111,4 +121,5 @@ module.exports = {
   fight,
   idParamIsValidMongoId,
   toonHasNotSupported,
+  toonHasNotActed,
 };
