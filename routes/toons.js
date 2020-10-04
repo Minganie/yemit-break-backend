@@ -24,6 +24,7 @@ router.post("/", [auth.isPlayer, validate.toon], async (req, res, next) => {
       user: req.user._id,
     };
     let toon = new Toon(whitelisted);
+    await toon.resetFight();
     toon = await toon.save();
     res.status(201).send(toon);
   } catch (e) {
