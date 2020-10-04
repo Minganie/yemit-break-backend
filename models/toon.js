@@ -74,6 +74,9 @@ const schema = new mongoose.Schema({
     guarding: mongoose.ObjectId,
     is_guarded: Boolean,
     guarded_by: mongoose.ObjectId,
+
+    is_harrying: Boolean,
+    harrying_with: String,
   },
 });
 
@@ -91,12 +94,23 @@ schema.virtual("moxie").get(async function () {
   return this.leadership * 100 + t.moxie + mh.moxie + oh.moxie;
 });
 
+schema.virtual("smashing").get(async function () {
+  const t = await Trait.findOne({ _id: this.trait });
+  const mh = await Weapon.findOne({ _id: this.main_hand });
+  const oh = await Weapon.findOne({ _id: this.off_hand });
+  return this.physical * 100 + t.smashing + mh.smashing + oh.smashing;
+});
+
+schema.virtual("entropy").get(async function () {
+  const t = await Trait.findOne({ _id: this.trait });
+  const mh = await Weapon.findOne({ _id: this.main_hand });
+  const oh = await Weapon.findOne({ _id: this.off_hand });
+  return this.magical * 100 + t.entropy + mh.entropy + oh.entropy;
+});
+
 schema.methods.resetRound = function () {
   this.quickAction = null;
-  this.statuses.is_covering = false;
-  this.statuses.covering = null;
-  this.statuses.covered = false;
-  this.statuses.covered_by = null;
+  this.statuses = {};
 };
 
 const Toon = mongoose.model("Toon", schema);
