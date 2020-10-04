@@ -5,6 +5,7 @@ const InspireGuard = require("../models/actions/support/InspireGuard");
 const Parry = require("../models/actions/support/Parry");
 
 const Attack = require("../models/actions/offense/Attack");
+const PreciseAttack = require("../models/actions/offense/PreciseAttack");
 
 const Toon = require("../models/toon");
 
@@ -33,15 +34,18 @@ const populate = async (req, res, next) => {
     case "Attack":
       req.action = new Attack(action);
       return next();
+    case "Precise Attack":
+      req.action = new PreciseAttack(action);
+      return next();
     default:
       next(
         new Error(`Can't figure out what action you want for "${action.name}"`)
       );
   }
 };
-const validate = (req, res, next) => {
+const validate = async (req, res, next) => {
   try {
-    req.action.validate();
+    await req.action.validate();
     next();
   } catch (e) {
     next(e);
