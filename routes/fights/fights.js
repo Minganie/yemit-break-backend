@@ -10,6 +10,7 @@ const Fight = require("../../models/fight");
 const advance = require("./advance");
 const support = require("./support");
 const offense = require("./offense");
+const defense = require("./defense");
 const validate = require("../../middleware/validate");
 const YbbeError = require("../../utils/YbbeError");
 
@@ -76,6 +77,7 @@ router.post("/", [auth.isDm, validate.fight], async (req, res, next) => {
 router.use("/:id/next", advance);
 router.use("/:id/support", support);
 router.use("/:id/offense", offense);
+router.use("/:id/defense", defense);
 
 if (process.env.NODE_ENV !== "production") {
   router.use("/:id/reset", async (req, res, next) => {
@@ -87,10 +89,8 @@ if (process.env.NODE_ENV !== "production") {
 
       let fight = await Fight.findOne({ _id });
       for (const _id of fight.toons) {
-        await Toon.updateOne(
-          { _id },
-          { current_hp: 40, quickAction: null, action: null, statuses: {} }
-        );
+        const toon = await Toon.findOne({ _id });
+        await toon.resetFight();
       }
       for (const _id of fight.enemies) {
         const enemy = await Enemy.findOne({ _id });

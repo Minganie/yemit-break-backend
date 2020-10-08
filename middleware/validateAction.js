@@ -1,6 +1,7 @@
 const debug = require("debug")("ybbe:validate-action");
 const mongoose = require("mongoose");
 
+const { Attack } = require("../models/attack");
 const Enemy = require("../models/enemy");
 const Toon = require("../models/toon");
 const YbbeError = require("../utils/YbbeError");
@@ -15,12 +16,12 @@ const toonHasNotSupported = (toon) => {
   }
 };
 
-const toonHasNotActed = (toon) => {
-  if (toon.action !== null) {
+const hasNotActed = (toonOrMob) => {
+  if (toonOrMob.action) {
     throw new YbbeError(
-      toon.name + " has already taken an action this round",
+      toonOrMob.name + " has already taken an action this round",
       400,
-      { from: toon.name + " has already taken an action this round" }
+      { from: toonOrMob.name + " has already taken an action this round" }
     );
   }
 };
@@ -68,6 +69,26 @@ const itsAnEnemy = async (param, name) => {
   }
 };
 
+const itsAnAttack = async (param, name) => {
+  try {
+    itsPresent(param, name);
+    itsAMongooseId(param, name);
+    const attack = await Attack.findOne({ _id: param });
+    itExistsInMongo(attack);
+    return attack;
+  } catch (e) {
+    throw e;
+  }
+};
+
+const fromIsAnEnemy = async (req) => {
+  try {
+    req.body.from = await itsAnEnemy(req.body.from, "Acting mob");
+  } catch (e) {
+    throw e;
+  }
+};
+
 const fromIsAToon = async (req) => {
   try {
     req.body.from = await itsAToon(req.body.from, "Acting toon");
@@ -82,6 +103,15 @@ const fromIsYourToon = (req) => {
     });
   }
 };
+const toIsYourAttack = (req) => {
+  if (!req.body.from._id.equals(req.body.to.to))
+    throw new YbbeError(
+      "The attack you're trying to resolve didn't target you",
+      400,
+      { to: "The attack you're trying to resolve didn't target you" }
+    );
+};
+
 const toIsAToon = async (req) => {
   try {
     req.body.to = await itsAToon(req.body.to, "Target toon");
@@ -97,6 +127,13 @@ const toAreToons = async (req) => {
       toons.push(toon);
     }
     req.body.to = toons;
+  } catch (e) {
+    throw e;
+  }
+};
+const toIsAnAttack = async (req) => {
+  try {
+    req.body.to = await itsAnAttack(req.body.to, "Attack to be resolved");
   } catch (e) {
     throw e;
   }
@@ -230,7 +267,7 @@ const attack = async (req, res, next) => {
   try {
     await fromIsAToon(req);
     fromIsYourToon(req);
-    toonHasNotActed(req.body.from);
+    hasNotActed(req.body.from);
 
     await toAreEnemies(req);
     rollIsValid(req);
@@ -256,7 +293,7 @@ const heal = async (req, res, next) => {
   try {
     await fromIsAToon(req);
     fromIsYourToon(req);
-    toonHasNotActed(req.body.from);
+    hasNotActed(req.body.from);
 
     await toAreToons(req);
 
@@ -274,9 +311,67 @@ const precise = async (req, res, next) => {
   try {
     await fromIsAToon(req);
     fromIsYourToon(req);
-    toonHasNotActed(req.body.from);
+    hasNotActed(req.body.from);
 
     await toAreEnemies(req);
+
+    next();
+  } catch (e) {
+    next(e);
+  }
+};
+
+const mobAttack = async (req, res, next) => {
+  try {
+    await fromIsAnEnemy(req);
+    hasNotActed(req.body.from);
+
+    rollIsValid(req);
+
+    await toAreToons(req);
+
+    next();
+  } catch (e) {
+    next(e);
+  }
+};
+
+const itsAValidTankBusterBonus = (value) => {
+  if (!value) return false;
+  if (!Number.isInteger(value)) return false;
+  if (value < 1) return false;
+  return true;
+};
+
+const mobTankBuster = async (req, res, next) => {
+  try {
+    await fromIsAnEnemy(req);
+    hasNotActed(req.body.from);
+
+    rollIsValid(req);
+
+    if (!itsAValidTankBusterBonus(req.body.tankBusterBonus))
+      throw new YbbeError("You must specify a tank buster bonus", 400, {
+        tankBusterBonus: "You must specify a tank buster bonus",
+      });
+
+    await toAreToons(req);
+
+    next();
+  } catch (e) {
+    next(e);
+  }
+};
+
+const resolve = async (req, res, next) => {
+  try {
+    await fromIsAToon(req);
+    fromIsYourToon(req);
+
+    await toIsAnAttack(req);
+    toIsYourAttack(req);
+
+    rollIsValid(req);
 
     next();
   } catch (e) {
@@ -293,4 +388,7 @@ module.exports = {
   attack,
   heal,
   precise,
+  mobAttack,
+  mobTankBuster,
+  resolve,
 };

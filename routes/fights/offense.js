@@ -111,10 +111,10 @@ router.post(
       await from.save();
 
       // log
-      const msg = `${from.name} attacks [${zip
-        .map((t) => t.target.name)
-        .toString()}], damaging them for [${zip
-        .map((t) => (t.name === "Miss" ? "Miss" : t.value))
+      const msg = `${from.name} attacks [${Object.keys(zip)
+        .map((k) => k)
+        .toString()}], damaging them for [${Object.keys(zip)
+        .map((k) => (zip[k].name == "Miss" ? "Miss" : zip[k].value))
         .toString()}]`;
       debug(msg);
 

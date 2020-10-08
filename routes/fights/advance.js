@@ -23,8 +23,7 @@ router.post(
         return next(
           new YbbeError("This isn't your fight.", 403, { id: req.params.id })
         );
-      fight.advance();
-      fight = await fight.save();
+      fight = await fight.advance();
       res.send(fight);
     } catch (e) {
       next(e);

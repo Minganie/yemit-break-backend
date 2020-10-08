@@ -121,16 +121,42 @@ schema.virtual("max_hp").get(async function () {
   return 40 + mh.hp + oh.hp + t.hp + a.hp;
 });
 
-schema.methods.resetRound = function () {
+schema.methods.resetRound = async function () {
   this.quickAction = null;
   this.action = null;
   this.statuses = {};
+  return await this.save();
 };
 schema.methods.resetFight = async function () {
   this.quickAction = null;
   this.action = null;
   this.statuses = {};
-  this.hp = await this.max_hp;
+  this.current_hp = await this.max_hp;
+  return await this.save();
+};
+schema.methods.computeDodge = async function (roll) {
+  const dodge = await this.dodging;
+
+  let guarded = 0;
+  if (this.statuses.is_guarded) {
+    for (const _id of this.statuses.guarded_by) {
+      const guarder = await Toon.findOne({ _id });
+      guarded += await guarder.moxie;
+    }
+  }
+
+  let parrying = 0;
+  if (this.statuses.is_parrying) {
+    parrying += await this.wit;
+  }
+
+  let dodged = Math.floor((roll + dodge + guarded + parrying) / 100);
+  if (roll >= 900) dodged *= 2;
+  return dodged;
+};
+schema.methods.takeDamage = async function (dmg) {
+  this.current_hp = this.current_hp - dmg;
+  return await this.save();
 };
 
 const Toon = mongoose.model("Toon", schema);
