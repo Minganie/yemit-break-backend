@@ -33,12 +33,28 @@ const schema = new mongoose.Schema(
 );
 
 schema.methods.takeDamage = async function (dmg) {
-  this.current_hp = this.current_hp - dmg;
-  return await this.save();
+  try {
+    this.current_hp = this.current_hp - dmg;
+    return await this.save();
+  } catch (e) {
+    throw e;
+  }
 };
 schema.methods.resetRound = async function () {
-  this.action = null;
-  return await this.save();
+  try {
+    this.action = null;
+    return await this.save();
+  } catch (e) {
+    throw e;
+  }
+};
+schema.methods.takeAction = async function (action) {
+  try {
+    this.action = action;
+    return await this.save();
+  } catch (e) {
+    throw e;
+  }
 };
 
 const Enemy = mongoose.model("Enemy", schema);

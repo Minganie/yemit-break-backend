@@ -43,11 +43,6 @@ const insertAttacks = async (action) => {
   return attacks;
 };
 
-const updateMob = async (req, actionName) => {
-  req.body.from.action = actionName;
-  req.body.from = await req.body.from.save();
-};
-
 router.post(
   "/mob-attack",
   [auth.isDm, itsYourFight, validate.mobAttack],
@@ -55,7 +50,7 @@ router.post(
     try {
       const attacks = await insertAttacks(req.body);
 
-      await updateMob(req, "Mob Attack");
+      req.body.from = await req.body.from.takeAction("Mob Attack");
 
       const msg = `${req.body.from.name} attacked [${req.body.to
         .map((t) => t.name)
@@ -78,7 +73,7 @@ router.post(
   async (req, res, next) => {
     try {
       const attacks = await insertAttacks(req.body);
-      await updateMob(req, "Mob Tank Buster");
+      req.body.from = await req.body.from.takeAction("Tank Buster");
 
       const msg = `${req.body.from.name} busted [${req.body.to
         .map((t) => t.name)

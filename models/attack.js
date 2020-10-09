@@ -27,12 +27,16 @@ const attackSchema = new mongoose.Schema({
 });
 
 attackSchema.methods.computeDamage = async function () {
-  const to = await Toon.findOne({ _id: this.to });
+  try {
+    const to = await Toon.findOne({ _id: this.to });
 
-  let dmg = Math.floor((this.roll + this.bonus) / 100);
-  if (this.roll >= 900 && !to.statuses.is_parrying) dmg *= 2;
+    let dmg = Math.floor((this.roll + this.bonus) / 100);
+    if (this.roll >= 900 && !to.statuses.is_parrying) dmg *= 2;
 
-  return dmg;
+    return dmg;
+  } catch (e) {
+    throw e;
+  }
 };
 
 const Attack = mongoose.model("Attack", attackSchema);
