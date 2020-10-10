@@ -24,6 +24,10 @@ router.post(
           new YbbeError("This isn't your fight.", 403, { id: req.params.id })
         );
       fight = await fight.advance();
+      req.app.locals.dispatcher.send("fight-advance", {
+        msg: "Advanced to a new phase in the fight",
+        fight: fight,
+      });
       res.send(fight);
     } catch (e) {
       next(e);
