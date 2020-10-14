@@ -65,6 +65,10 @@ app.use("/api/events/", (req, res) => {
   });
 });
 
+app.use("*", (req, res) => {
+  res.sendFile("index.html", { root: path.join(__dirname, "./public/") });
+});
+
 // errors
 app.use(fourohfour);
 app.use(clientErrors);

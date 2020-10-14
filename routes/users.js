@@ -47,8 +47,8 @@ router.post("/login", validate.login, async (req, res, next) => {
   try {
     const user = await User.findOne({ email: req.body.email });
     if (!user)
-      throw new YbbeError("Not Found", 404, {
-        email: ["No user is registered with this email"],
+      throw new YbbeError("No user is registered with this email", 404, {
+        email: "No user is registered with this email",
       });
 
     const validPassword = await bcrypt.compare(
