@@ -13,6 +13,14 @@ Validator.register(
 );
 
 Validator.register(
+  "password",
+  (value, requirement, attribute) => {
+    return new RegExp(common.regexes.password).test(value);
+  },
+  "The :attribute must be 5 to 25 characters long"
+);
+
+Validator.register(
   "sane_string_par",
   (value, requirement, attribute) => {
     return new RegExp(common.regexes.fight).test(value);
