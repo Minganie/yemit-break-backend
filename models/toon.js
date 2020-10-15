@@ -12,6 +12,24 @@ const schema = new mongoose.Schema({
     required: true,
     unique: true,
   },
+  gender: {
+    type: String,
+    enum: ["Male", "Female"],
+    required: true,
+  },
+  race: {
+    type: String,
+    enum: [
+      "Hyur",
+      "Elezen",
+      "Miqo'te",
+      "Roegadyn",
+      "Au Ra",
+      "Hrothgar",
+      "Viera",
+    ],
+    required: true,
+  },
   physical: {
     type: Number,
     min: 0,

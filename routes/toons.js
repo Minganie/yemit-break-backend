@@ -13,6 +13,8 @@ router.post("/", [auth.isPlayer, validate.toon], async (req, res, next) => {
     const whitelisted = {
       ..._.pick(req.body, [
         "name",
+        "gender",
+        "race",
         "physical",
         "magical",
         "leadership",

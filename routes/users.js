@@ -22,16 +22,18 @@ router.post("/", validate.registration, async (req, res, next) => {
     res.status(201).send(payload);
   } catch (ex) {
     if (ex.code && ex.code === 11000) {
+      debug("duplicate user");
       next(
         new YbbeError(
           "A user with the given email is already registered.",
           400,
           {
-            email: ["A user with the given email is already registered."],
+            email: "A user with the given email is already registered.",
           }
         )
       );
     } else {
+      debug(ex);
       next(
         new YbbeError(
           "Internal Server Error",
