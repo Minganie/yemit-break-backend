@@ -24,9 +24,11 @@ const httpsServer = https.createServer({
 /**
  * Listen on provided port, on all network interfaces.
  */
-httpServer.listen(80, () => {
-  debug("http server listening on port 80");
+const httpPort = process.env.NODE_ENV === "production" ? 80 : 3080;
+const httpsPort = process.env.NODE_ENV === "production" ? 443 : 3443;
+httpServer.listen(httpPort, () => {
+  debug(`http server listening on port ${httpPort}`);
 });
-httpsServer.listen(443, () => {
-  debug("https server listening on port 443");
+httpsServer.listen(httpsPort, () => {
+  debug(`https server listening on port ${httpsPort}`);
 });

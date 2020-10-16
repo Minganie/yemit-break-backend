@@ -18,6 +18,11 @@ const app = express();
 process.on("unhandledRejection", (e) => {
   throw e;
 });
+
+if (process.env.NODE_ENV !== "production") {
+  debug("In dev, using cors");
+  app.use(require("cors")());
+}
 require("./startup/db")();
 app.locals.clients = [];
 app.locals.dispatcher = new Dispatcher(app.locals.clients);
