@@ -12,6 +12,9 @@ const Dispatcher = require("./utils/dispatcher");
 const fightsRouter = require("./routes/fights/fights");
 const toonsRouter = require("./routes/toons");
 const usersRouter = require("./routes/users");
+const armorsRouter = require("./routes/armors");
+const traitsRouter = require("./routes/traits");
+const weaponsRouter = require("./routes/weapons");
 
 const app = express();
 // dispatch the unhandled promises to winston...
@@ -38,6 +41,9 @@ app.use(express.static("public"));
 app.use("/api/fights", fightsRouter);
 app.use("/api/toons", toonsRouter);
 app.use("/api/users", usersRouter);
+app.use("/api/armors", armorsRouter);
+app.use("/api/traits", traitsRouter);
+app.use("/api/weapons", weaponsRouter);
 
 app.use("/api/events/", (req, res) => {
   const headers = {
