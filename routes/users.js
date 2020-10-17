@@ -4,7 +4,9 @@ const express = require("express");
 const router = express.Router();
 const _ = require("lodash");
 
+const Toon = require("../models/toon");
 const User = require("../models/user");
+const auth = require("../middleware/auth");
 const validate = require("../middleware/validate");
 const YbbeError = require("../utils/YbbeError");
 
@@ -75,6 +77,16 @@ router.post("/login", validate.login, async (req, res, next) => {
 
 router.post("/logout", validate.logout, (req, res, next) => {
   res.status(200).send({});
+});
+
+router.get("/me/toons", auth.isPlayer, async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const toons = await Toon.find({ user: userId });
+    res.send(toons);
+  } catch (e) {
+    next(e);
+  }
 });
 
 module.exports = router;
