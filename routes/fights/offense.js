@@ -59,10 +59,13 @@ router.post(
         .toString()}], damaging them for [${Object.keys(zip)
         .map((k) => (zip[k].name === "Miss" ? "Miss" : zip[k].value))
         .toString()}]`;
-      req.app.locals.dispatcher.send("action-taken", {
-        action: "Offense: attack",
-        msg: msg,
-      });
+      req.app.locals.sse.send(
+        {
+          action: "Offense: attack",
+          msg: msg,
+        },
+        "action-taken"
+      );
       debug(msg);
 
       // respond
@@ -100,10 +103,13 @@ router.post("/heal", [auth.isPlayer, validate.heal], async (req, res, next) => {
       .map((k, i) => zip[k].value)
       .toString();
     const msg = `${from.name} heals [${tars}] for [${vals}]`;
-    req.app.locals.dispatcher.send("action-taken", {
-      action: "Offense: heal",
-      msg: msg,
-    });
+    req.app.locals.sse.send(
+      {
+        action: "Offense: heal",
+        msg: msg,
+      },
+      "action-taken"
+    );
     debug(msg);
 
     // respond
@@ -140,10 +146,13 @@ router.post(
         .map((k, i) => (zip[k].name === "Miss" ? "Miss" : zip[k].value))
         .toString();
       const msg = `${from.name} precisely attacks [${tars}] for [${vals}]`;
-      req.app.locals.dispatcher.send("action-taken", {
-        action: "Offense: precise attack",
-        msg: msg,
-      });
+      req.app.locals.sse.send(
+        {
+          action: "Offense: precise attack",
+          msg: msg,
+        },
+        "action-taken"
+      );
       debug(msg);
 
       // respond

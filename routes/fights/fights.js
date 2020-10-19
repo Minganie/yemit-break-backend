@@ -63,10 +63,13 @@ router.post("/", [auth.isDm, validate.fight], async (req, res, next) => {
       const fight = await createFight(req.body, req.user, session);
       res.status(201).send(fight);
       await session.commitTransaction();
-      req.app.locals.dispatcher.send("fight-created", {
-        msg: "Created a new fight",
-        fight: fight,
-      });
+      req.app.locals.sse.send(
+        {
+          msg: "Created a new fight",
+          fight: fight,
+        },
+        "fight-created"
+      );
     } catch (e) {
       await session.abortTransaction();
       throw e;

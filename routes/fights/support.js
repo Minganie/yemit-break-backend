@@ -27,10 +27,13 @@ router.post(
 
       const wit = await from.wit;
       const msg = `${from.name} is covering ${to.name} (applying ${wit} wit)`;
-      req.app.locals.dispatcher.send("action-taken", {
-        action: "Support: cover",
-        msg: msg,
-      });
+      req.app.locals.sse.send(
+        {
+          action: "Support: cover",
+          msg: msg,
+        },
+        "action-taken"
+      );
       debug(msg);
 
       res.send({ msg, from: from.statuses, to: to.statuses });
@@ -63,10 +66,13 @@ router.post(
       else stat = await from.entropy;
 
       const msg = `${from.name} is harrying (applying ${stat} ${req.body.with})`;
-      req.app.locals.dispatcher.send("action-taken", {
-        action: "Support: harry",
-        msg: msg,
-      });
+      req.app.locals.sse.send(
+        {
+          action: "Support: harry",
+          msg: msg,
+        },
+        "action-taken"
+      );
       debug(msg);
 
       res.send({ msg, from: from.statuses });
@@ -108,10 +114,13 @@ router.post(
 
       const moxie = await from.moxie;
       const msg = `${from.name} is inspiring ${to.name} to ${action} (applying ${moxie} moxie)`;
-      req.app.locals.dispatcher.send("action-taken", {
-        action: "Support: inspire",
-        msg: msg,
-      });
+      req.app.locals.sse.send(
+        {
+          action: "Support: inspire",
+          msg: msg,
+        },
+        "action-taken"
+      );
       debug(msg);
 
       res.send({ msg, from: from.statuses, to: to.statuses });
@@ -145,10 +154,13 @@ router.post(
 
       const moxie = await from.moxie;
       const msg = `${from.name} is guarding ${to.name} (applying ${moxie} moxie)`;
-      req.app.locals.dispatcher.send("action-taken", {
-        action: "Support: guard",
-        msg: msg,
-      });
+      req.app.locals.sse.send(
+        {
+          action: "Support: guard",
+          msg: msg,
+        },
+        "action-taken"
+      );
       debug(msg);
 
       res.send({ msg, from: from.statuses, to: to.statuses });
@@ -174,10 +186,13 @@ router.post(
 
       const wit = await from.wit;
       const msg = `${from.name} is parrying (applying ${wit} wit)`;
-      req.app.locals.dispatcher.send("action-taken", {
-        action: "Support: parry",
-        msg: msg,
-      });
+      req.app.locals.sse.send(
+        {
+          action: "Support: parry",
+          msg: msg,
+        },
+        "action-taken"
+      );
       debug(msg);
 
       res.send({ msg, from: from.statuses });

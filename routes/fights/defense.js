@@ -58,10 +58,13 @@ router.post(
         .map((a) => a.roll + "+" + a.bonus)
         .toString()}]`;
 
-      req.app.locals.dispatcher.send("action-taken", {
-        action: "Defense: mob attack",
-        msg: msg,
-      });
+      req.app.locals.sse.send(
+        {
+          action: "Defense: mob attack",
+          msg: msg,
+        },
+        "action-taken"
+      );
       debug(msg);
 
       res.send({ msg, attacks });
@@ -84,10 +87,13 @@ router.post(
         .toString()}] for [${attacks
         .map((a) => a.roll + "+" + a.bonus)
         .toString()}]`;
-      req.app.locals.dispatcher.send("action-taken", {
-        action: "Defense: mob tank buster",
-        msg: msg,
-      });
+      req.app.locals.sse.send(
+        {
+          action: "Defense: mob tank buster",
+          msg: msg,
+        },
+        "action-taken"
+      );
       debug(msg);
 
       res.send({ msg, attacks });
@@ -135,10 +141,13 @@ router.post(
       }
       await Attack.deleteOne({ _id: attack._id });
 
-      req.app.locals.dispatcher.send("action-taken", {
-        action: "Defense: attack resolved",
-        msg: msg,
-      });
+      req.app.locals.sse.send(
+        {
+          action: "Defense: attack resolved",
+          msg: msg,
+        },
+        "action-taken"
+      );
       debug(msg);
       res.send({ msg });
     } catch (e) {
