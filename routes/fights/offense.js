@@ -5,6 +5,9 @@ const router = express.Router({ mergeParams: true });
 const validate = require("../../middleware/validateAction");
 const auth = require("../../middleware/auth");
 
+const Fight = require("../../models/fight");
+const Toon = require("../../models/toon");
+
 const zipper = (total, targets) => {
   const result = {};
   const rest = total % targets.length;
@@ -22,13 +25,14 @@ const zipper = (total, targets) => {
 
 const applyDamage = async (action, zip) => {
   try {
-    for (const [name, a] of Object.entries(zip)) {
-      if (action.bonusedRoll > a.target.dc) {
-        a.name = "Hit";
-        a.target.current_hp = a.target.current_hp - a.value;
-        await a.target.save();
+    for (const [name, targetValue] of Object.entries(zip)) {
+      if (action.bonusedRoll > targetValue.target.dc) {
+        targetValue.name = "Hit";
+        targetValue.target.current_hp =
+          targetValue.target.current_hp - targetValue.value;
+        await targetValue.target.save();
       } else {
-        a.name = "Miss";
+        targetValue.name = "Miss";
       }
     }
   } catch (e) {
@@ -59,10 +63,15 @@ router.post(
         .toString()}], damaging them for [${Object.keys(zip)
         .map((k) => (zip[k].name === "Miss" ? "Miss" : zip[k].value))
         .toString()}]`;
+      const fight = await Fight.findOne()
+        .populate("enemies")
+        .populate("attacks");
       req.app.locals.sse.send(
         {
           action: "Offense: attack",
           msg: msg,
+          toons: [from],
+          fight: fight,
         },
         "action-taken"
       );
@@ -103,10 +112,15 @@ router.post("/heal", [auth.isPlayer, validate.heal], async (req, res, next) => {
       .map((k, i) => zip[k].value)
       .toString();
     const msg = `${from.name} heals [${tars}] for [${vals}]`;
+    const targetIds = req.body.to.map((t) => {
+      return t._id;
+    });
+    const tos = await Toon.find({ _id: { $in: targetIds } });
     req.app.locals.sse.send(
       {
         action: "Offense: heal",
         msg: msg,
+        toons: [from, ...tos],
       },
       "action-taken"
     );
@@ -146,10 +160,15 @@ router.post(
         .map((k, i) => (zip[k].name === "Miss" ? "Miss" : zip[k].value))
         .toString();
       const msg = `${from.name} precisely attacks [${tars}] for [${vals}]`;
+      const fight = await Fight.findOne()
+        .populate("enemies")
+        .populate("attacks");
       req.app.locals.sse.send(
         {
           action: "Offense: precise attack",
           msg: msg,
+          toons: [from],
+          fight: fight,
         },
         "action-taken"
       );

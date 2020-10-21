@@ -31,6 +31,7 @@ router.post(
         {
           action: "Support: cover",
           msg: msg,
+          toons: [from, to],
         },
         "action-taken"
       );
@@ -70,6 +71,7 @@ router.post(
         {
           action: "Support: harry",
           msg: msg,
+          toons: [from],
         },
         "action-taken"
       );
@@ -118,6 +120,7 @@ router.post(
         {
           action: "Support: inspire",
           msg: msg,
+          toons: [from, to],
         },
         "action-taken"
       );
@@ -158,6 +161,7 @@ router.post(
         {
           action: "Support: guard",
           msg: msg,
+          toons: [from, to],
         },
         "action-taken"
       );
@@ -190,6 +194,7 @@ router.post(
         {
           action: "Support: parry",
           msg: msg,
+          toons: [from],
         },
         "action-taken"
       );

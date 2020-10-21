@@ -25,20 +25,18 @@ const itsYourFight = async (req, res, next) => {
   }
 };
 
-const insertAttacks = async (action) => {
+const insertAttacks = async (fightId, action) => {
   const attacks = [];
   for (const toon of action.to) {
-    attacks.push(
-      await new Attack({
-        from: action.from,
-        to: toon,
-        roll: action.roll,
-        bonus:
-          action.name === "Tank Buster"
-            ? action.tankBusterBonus
-            : action.from.ab,
-      }).save()
-    );
+    const attack = await new Attack({
+      from: action.from,
+      to: toon,
+      roll: action.roll,
+      bonus:
+        action.name === "Tank Buster" ? action.tankBusterBonus : action.from.ab,
+    }).save();
+    attacks.push(attack);
+    await Fight.update({ _id: fightId }, { $push: { attacks: attack._id } });
   }
   return attacks;
 };
@@ -48,7 +46,7 @@ router.post(
   [auth.isDm, itsYourFight, validate.mobAttack],
   async (req, res, next) => {
     try {
-      const attacks = await insertAttacks(req.body);
+      const attacks = await insertAttacks(req.params.id, req.body);
 
       req.body.from = await req.body.from.takeAction("Mob Attack");
 
@@ -58,12 +56,16 @@ router.post(
         .map((a) => a.roll + "+" + a.bonus)
         .toString()}]`;
 
+      const fight = await Fight.findOne()
+        .populate("enemies")
+        .populate("attacks");
       req.app.locals.sse.send(
         {
           action: "Defense: mob attack",
-          msg: msg,
+          msg,
+          fight,
         },
-        "action-taken"
+        "mob-acted"
       );
       debug(msg);
 
@@ -79,7 +81,7 @@ router.post(
   [auth.isDm, itsYourFight, validate.mobTankBuster],
   async (req, res, next) => {
     try {
-      const attacks = await insertAttacks(req.body);
+      const attacks = await insertAttacks(req.params.id, req.body);
       req.body.from = await req.body.from.takeAction("Tank Buster");
 
       const msg = `${req.body.from.name} busted [${req.body.to
@@ -87,12 +89,16 @@ router.post(
         .toString()}] for [${attacks
         .map((a) => a.roll + "+" + a.bonus)
         .toString()}]`;
+      const fight = await Fight.findOne()
+        .populate("enemies")
+        .populate("attacks");
       req.app.locals.sse.send(
         {
           action: "Defense: mob tank buster",
-          msg: msg,
+          msg,
+          fight,
         },
-        "action-taken"
+        "mob-acted"
       );
       debug(msg);
 
@@ -140,11 +146,19 @@ router.post(
         }
       }
       await Attack.deleteOne({ _id: attack._id });
+      await Fight.update(
+        { _id: req.params.id },
+        { $pull: { attacks: attack._id } }
+      );
 
+      const fight = await Fight.findOne()
+        .populate("enemies")
+        .populate("attacks");
       req.app.locals.sse.send(
         {
           action: "Defense: attack resolved",
-          msg: msg,
+          msg,
+          fight,
         },
         "action-taken"
       );
