@@ -16,7 +16,10 @@ const YbbeError = require("../../utils/YbbeError");
 
 router.get("/", async (req, res, next) => {
   try {
-    const fights = await Fight.find({}).sort("name");
+    const fights = await Fight.find({})
+      .populate("enemies")
+      .populate("attacks")
+      .sort("name");
     res.send(fights);
   } catch (e) {
     next(e);
@@ -24,7 +27,9 @@ router.get("/", async (req, res, next) => {
 });
 router.get("/:id", validate.idParamIsValidMongoId, async (req, res, next) => {
   try {
-    const fight = await Fight.findOne({ _id: req.params.id });
+    const fight = await Fight.findOne({ _id: req.params.id })
+      .populate("enemies")
+      .populate("attacks");
     if (!fight)
       return next(
         new YbbeError("Unable to find this fight.", 404, { id: req.params.id })
@@ -60,7 +65,11 @@ router.post("/", [auth.isDm, validate.fight], async (req, res, next) => {
     const session = await mongoose.startSession();
     session.startTransaction();
     try {
-      const fight = await createFight(req.body, req.user, session);
+      let fight = await createFight(req.body, req.user, session);
+      fight = await fight
+        .populate("enemies")
+        .populate("attacks")
+        .execPopulate();
       res.status(201).send(fight);
       await session.commitTransaction();
       req.app.locals.sse.send(

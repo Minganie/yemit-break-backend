@@ -1,6 +1,7 @@
 const debug = require("debug")("ybbe:fight-model");
 const mongoose = require("mongoose");
 
+const Attack = require("./attack");
 const Enemy = require("./enemy");
 const Toon = require("./toon");
 
@@ -20,16 +21,19 @@ const schema = new mongoose.Schema(
       },
       required: true,
     },
-    enemies: {
-      type: [mongoose.ObjectId],
-      validate: {
-        validator: function (value) {
-          return value && value.length && value.length > 0;
+    enemies: [
+      {
+        type: mongoose.ObjectId,
+        validate: {
+          validator: function (value) {
+            return value && value.length && value.length > 0;
+          },
+          message: "A fight must have at least one enemy.",
         },
-        message: "A fight must have at least one enemy.",
+        required: true,
+        ref: "Enemy",
       },
-      required: true,
-    },
+    ],
     round: {
       type: Number,
       required: true,
@@ -41,11 +45,14 @@ const schema = new mongoose.Schema(
       default: "Support",
       required: true,
     },
-    attacks: {
-      type: [mongoose.ObjectId],
-      required: true, // required but can be empty array
-      default: [],
-    },
+    attacks: [
+      {
+        type: mongoose.ObjectId,
+        required: true, // required but can be empty array
+        default: [],
+        ref: "Attack",
+      },
+    ],
     user: {
       type: mongoose.ObjectId,
       required: true,
