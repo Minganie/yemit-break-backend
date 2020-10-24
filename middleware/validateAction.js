@@ -379,7 +379,20 @@ const resolve = async (req, res, next) => {
   }
 };
 
+const pass = async (req, res, next) => {
+  try {
+    await fromIsAToon(req);
+    fromIsYourToon(req);
+    toonHasNotSupported(req.body.from);
+
+    next();
+  } catch (e) {
+    next(e);
+  }
+};
+
 module.exports = {
+  pass,
   cover,
   harry,
   inspire,
