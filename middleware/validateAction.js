@@ -379,7 +379,7 @@ const resolve = async (req, res, next) => {
   }
 };
 
-const pass = async (req, res, next) => {
+const passSupport = async (req, res, next) => {
   try {
     await fromIsAToon(req);
     fromIsYourToon(req);
@@ -391,8 +391,21 @@ const pass = async (req, res, next) => {
   }
 };
 
+const passAction = async (req, res, next) => {
+  try {
+    await fromIsAToon(req);
+    fromIsYourToon(req);
+    hasNotActed(req.body.from);
+
+    next();
+  } catch (e) {
+    next(e);
+  }
+};
+
 module.exports = {
-  pass,
+  passSupport,
+  passAction,
   cover,
   harry,
   inspire,

@@ -182,4 +182,29 @@ router.post(
   }
 );
 
+router.post(
+  "/pass",
+  [auth.isPlayer, validate.passAction],
+  async (req, res, next) => {
+    try {
+      let { from } = req.body;
+      from.action = "Pass";
+      from = await from.save();
+      const msg = `${from.name} passes for the action phase`;
+      req.app.locals.sse.send(
+        {
+          action: "Action: pass",
+          msg,
+          toons: [from],
+        },
+        "action-taken"
+      );
+      debug(msg);
+      res.send({ msg, from: from.statuses });
+    } catch (e) {
+      next(e);
+    }
+  }
+);
+
 module.exports = router;

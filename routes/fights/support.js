@@ -207,26 +207,30 @@ router.post(
   }
 );
 
-router.post("/pass", [auth.isPlayer, validate.pass], async (req, res, next) => {
-  try {
-    let { from } = req.body;
-    from.quickAction = "Pass";
-    from = await from.save();
-    const msg = `${from.name} passes for the support round`;
-    req.app.locals.sse.send(
-      {
-        action: "Support: pass",
-        msg,
-        toons: [from],
-      },
-      "action-taken"
-    );
-    debug(msg);
+router.post(
+  "/pass",
+  [auth.isPlayer, validate.passSupport],
+  async (req, res, next) => {
+    try {
+      let { from } = req.body;
+      from.quickAction = "Pass";
+      from = await from.save();
+      const msg = `${from.name} passes for the support phase`;
+      req.app.locals.sse.send(
+        {
+          action: "Support: pass",
+          msg,
+          toons: [from],
+        },
+        "action-taken"
+      );
+      debug(msg);
 
-    res.send({ msg, from: from.statuses });
-  } catch (e) {
-    next(e);
+      res.send({ msg, from: from.statuses });
+    } catch (e) {
+      next(e);
+    }
   }
-});
+);
 
 module.exports = router;
