@@ -219,7 +219,11 @@ schema.methods.computeInspiration = async function (action) {
     let inspiration = 0;
     if (this.statuses.is_inspired) {
       for (const inspired of this.statuses.inspired) {
-        if (inspired.to === action.name) {
+        const inspiredToHeal = inspired.to === "Heal" && action.name === "Heal";
+        const inspiredToAttack =
+          inspired.to === "Attack" &&
+          (action.name === "Attack" || action.name === "Precise Attack");
+        if (inspiredToHeal || inspiredToAttack) {
           const inspirer = await Toon.findOne({
             _id: inspired.by,
           });
