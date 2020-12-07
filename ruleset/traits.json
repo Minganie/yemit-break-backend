@@ -1,0 +1,105 @@
+[{
+  "_id": {
+    "$oid": "5f70f24f6cb2920e58e642ac"
+  },
+  "name": "Resilient",
+  "smashing": 0,
+  "dodging": -200,
+  "entropy": 0,
+  "harmony": 0,
+  "moxie": 0,
+  "wit": 0,
+  "hp": 20,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f70f24f6cb2920e58e642ad"
+  },
+  "name": "Agent of Chaos",
+  "smashing": 0,
+  "dodging": 0,
+  "entropy": 200,
+  "harmony": -200,
+  "moxie": 0,
+  "wit": 0,
+  "hp": 0,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f70f24f6cb2920e58e642af"
+  },
+  "name": "Inspiring",
+  "smashing": 0,
+  "dodging": 0,
+  "entropy": 0,
+  "harmony": 0,
+  "moxie": 200,
+  "wit": -200,
+  "hp": 0,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f70f24f6cb2920e58e642ae"
+  },
+  "name": "Harmonic Resonance",
+  "smashing": 0,
+  "dodging": 0,
+  "entropy": -200,
+  "harmony": 200,
+  "moxie": 0,
+  "wit": 0,
+  "hp": 0,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f70f24f6cb2920e58e642b3"
+  },
+  "name": "Glass Cannon",
+  "smashing": 200,
+  "dodging": 0,
+  "entropy": 0,
+  "harmony": 0,
+  "moxie": 0,
+  "wit": 0,
+  "hp": -20,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f70f24f6cb2920e58e642b0"
+  },
+  "name": "Strategist",
+  "smashing": 0,
+  "dodging": 0,
+  "entropy": 0,
+  "harmony": 0,
+  "moxie": -200,
+  "wit": 200,
+  "hp": 0,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f70f24f6cb2920e58e642b2"
+  },
+  "name": "Balanced",
+  "smashing": 0,
+  "dodging": 0,
+  "entropy": 0,
+  "harmony": 0,
+  "moxie": 0,
+  "wit": 0,
+  "hp": 0,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f70f24f6cb2920e58e642b1"
+  },
+  "name": "Evasive",
+  "smashing": -200,
+  "dodging": 200,
+  "entropy": 0,
+  "harmony": 0,
+  "moxie": 0,
+  "wit": 0,
+  "hp": 0,
+  "__v": 0
+}]

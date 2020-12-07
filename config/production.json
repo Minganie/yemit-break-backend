@@ -1,14 +1,14 @@
 {
   "dbConfig": {
     "host": "melsmongo.uouve.azure.mongodb.net",
-    "name": "league-dev"
+    "name": "league"
   },
   "certConfig": {
     "cert": "./cert.pem",
     "key": "./key.pem"
   },
   "logsConfig": {
-    "error": "./error.log",
-    "critical": "./critical.log"
+    "error": "/var/log/node/error.log",
+    "critical": "/var/log/node/critical.log"
   }
 }

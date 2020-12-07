@@ -70,8 +70,8 @@ const fight = (req, res, next) => {
     toons: "array",
     enemies: "array",
     "enemies.*.name": "sane_string_par|required",
-    "enemies.*.dc": "integer|required|min:0",
-    "enemies.*.ab": "integer|required|min:0",
+    "enemies.*.dc": "integer|required",
+    "enemies.*.ab": "integer|required",
     "enemies.*.hp": "integer|required|min:0",
   };
   validator(req.body, validationRule, {}, (err, status) => {

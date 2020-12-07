@@ -332,6 +332,7 @@ const mobAttack = async (req, res, next) => {
 
     next();
   } catch (e) {
+    debug(e);
     next(e);
   }
 };

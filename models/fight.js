@@ -1,7 +1,7 @@
 const debug = require("debug")("ybbe:fight-model");
 const mongoose = require("mongoose");
 
-const Attack = require("./attack");
+const { Attack } = require("./attack");
 const Enemy = require("./enemy");
 const Toon = require("./toon");
 
@@ -61,6 +61,24 @@ const schema = new mongoose.Schema(
   },
   { autoCreate: true }
 );
+schema.methods.delete = async function () {
+  debug("Models::Fight deleting...");
+  try {
+    debug("attacks", this.attacks);
+    await Attack.deleteMany({ _id: { $in: this.attacks } });
+    debug("enemies", this.enemies);
+    await Enemy.deleteMany({ _id: { $in: this.enemies } });
+    debug("toons", this.toons);
+    for (const _id of this.toons) {
+      const toon = await Toon.findOne({ _id });
+      await toon.resetFight();
+    }
+    await Fight.deleteOne({ _id: this._id });
+    return true;
+  } catch (e) {
+    throw e;
+  }
+};
 schema.methods.advance = async function () {
   try {
     switch (this.phase) {

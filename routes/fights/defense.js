@@ -36,7 +36,7 @@ const insertAttacks = async (fightId, action) => {
         action.name === "Tank Buster" ? action.tankBusterBonus : action.from.ab,
     }).save();
     attacks.push(attack);
-    await Fight.update({ _id: fightId }, { $push: { attacks: attack._id } });
+    await Fight.updateOne({ _id: fightId }, { $push: { attacks: attack._id } });
   }
   return attacks;
 };
@@ -56,7 +56,7 @@ router.post(
         .map((a) => a.roll + "+" + a.bonus)
         .toString()}]`;
 
-      const fight = await Fight.findOne()
+      const fight = await Fight.findOne({ _id: req.params.id })
         .populate("enemies")
         .populate("attacks");
       req.app.locals.sse.send(
@@ -89,7 +89,7 @@ router.post(
         .toString()}] for [${attacks
         .map((a) => a.roll + "+" + a.bonus)
         .toString()}]`;
-      const fight = await Fight.findOne()
+      const fight = await Fight.findOne({ _id: req.params.id })
         .populate("enemies")
         .populate("attacks");
       req.app.locals.sse.send(
@@ -121,44 +121,50 @@ router.post(
       const dmg = await attack.computeDamage();
       let enemy = await Enemy.findOne({ _id: attack.from });
 
+      let modToonId = null;
+
       if (dodged > dmg) {
         const retaliation = dodged - dmg;
         enemy = await enemy.takeDamage(retaliation);
-        msg = `${toon.name} dodged the attacked and retaliated against ${enemy.name} for ${retaliation} dmg`;
+        msg = `${toon.name} dodged the attack and retaliated against ${enemy.name} for ${retaliation} dmg`;
       } else {
         let hurt = dmg - dodged;
         if (toon.statuses.is_covered) {
-          msg = `${toon.name} dodged ${dodged} from ${enemy.name} but would still have been hit for ${hurt}\n`;
+          msg = `${toon.name} dodged ${dodged} from ${enemy.name}'s attack but would still have been hit for ${hurt} dmg\n`;
           let coverer = await Toon.findOne({ _id: toon.statuses.covered_by });
           const wit = Math.floor((await coverer.wit) / 100);
           if (wit > hurt) {
             const retaliation = wit - hurt;
             enemy = await enemy.takeDamage(retaliation);
-            msg += `${coverer.name} is so witty they retaliated against ${enemy.name} for ${retaliation}`;
+            msg += `${coverer.name} is so witty they retaliated against ${enemy.name} for ${retaliation} dmg`;
           } else {
             hurt = hurt - wit;
             coverer = await coverer.takeDamage(hurt);
-            msg += `${coverer.name} takes the leftover ${hurt} from ${enemy.name}`;
+            msg += `${coverer.name} takes the leftover ${hurt} dmg from ${enemy.name}`;
+            modToonId = coverer._id;
           }
         } else {
           toon = await toon.takeDamage(hurt);
-          msg = `${toon.name} dodged part of the attack from ${enemy.name} but was hit for ${hurt}`;
+          modToonId = toon._id;
+          msg = `${toon.name} dodged ${dodged} from ${enemy.name}'s attack and was hit for ${hurt} dmg`;
         }
       }
       await Attack.deleteOne({ _id: attack._id });
-      await Fight.update(
+      await Fight.updateOne(
         { _id: req.params.id },
         { $pull: { attacks: attack._id } }
       );
 
-      const fight = await Fight.findOne()
+      const fight = await Fight.findOne({ _id: req.params.id })
         .populate("enemies")
         .populate("attacks");
+      const modToon = modToonId ? await Toon.findOne({ _id: modToonId }) : null;
       req.app.locals.sse.send(
         {
           action: "Defense: attack resolved",
           msg,
           fight,
+          toons: modToon ? [modToon] : null,
         },
         "action-taken"
       );

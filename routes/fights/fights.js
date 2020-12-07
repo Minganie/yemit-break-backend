@@ -11,6 +11,7 @@ const advance = require("./advance");
 const support = require("./support");
 const offense = require("./offense");
 const defense = require("./defense");
+const deleter = require("./delete");
 const validate = require("../../middleware/validate");
 const YbbeError = require("../../utils/YbbeError");
 
@@ -94,6 +95,7 @@ router.use("/:id/next", advance);
 router.use("/:id/support", support);
 router.use("/:id/offense", offense);
 router.use("/:id/defense", defense);
+router.use("/:id/delete", deleter);
 
 if (process.env.NODE_ENV !== "production") {
   router.use("/:id/reset", async (req, res, next) => {

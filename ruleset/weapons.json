@@ -1,0 +1,300 @@
+[{
+  "_id": {
+    "$oid": "5f70f534eaa9ea3174806575"
+  },
+  "name": "Brass Knuckle",
+  "smashing": 100,
+  "dodging": 50,
+  "entropy": 0,
+  "harmony": 0,
+  "hp": 0,
+  "moxie": 0,
+  "hands": 1,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f70f534eaa9ea3174806573"
+  },
+  "name": "Shield",
+  "smashing": 0,
+  "dodging": 0,
+  "entropy": 0,
+  "harmony": 0,
+  "hp": 15,
+  "moxie": 0,
+  "hands": 1,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f70f534eaa9ea3174806571"
+  },
+  "name": "Unarmed",
+  "smashing": 0,
+  "dodging": 100,
+  "entropy": 0,
+  "harmony": 0,
+  "hp": 0,
+  "moxie": 0,
+  "hands": 1,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f70f534eaa9ea3174806570"
+  },
+  "name": "Empty",
+  "smashing": 0,
+  "dodging": 0,
+  "entropy": 0,
+  "harmony": 0,
+  "hp": 0,
+  "moxie": 0,
+  "hands": 0,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f70f534eaa9ea3174806574"
+  },
+  "name": "Dagger",
+  "smashing": 100,
+  "dodging": 50,
+  "entropy": 0,
+  "harmony": 0,
+  "hp": 0,
+  "moxie": 0,
+  "hands": 1,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f70f534eaa9ea3174806572"
+  },
+  "name": "One Handed Sword",
+  "smashing": 150,
+  "dodging": 0,
+  "entropy": 0,
+  "harmony": 0,
+  "hp": 0,
+  "moxie": 0,
+  "hands": 1,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f70f534eaa9ea3174806578"
+  },
+  "name": "Gunblade",
+  "smashing": 300,
+  "dodging": 0,
+  "entropy": 0,
+  "harmony": 0,
+  "hp": 0,
+  "moxie": 0,
+  "hands": 2,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f70f534eaa9ea3174806579"
+  },
+  "name": "Lance",
+  "smashing": 200,
+  "dodging": 100,
+  "entropy": 0,
+  "harmony": 0,
+  "hp": 0,
+  "moxie": 0,
+  "hands": 2,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f70f534eaa9ea3174806576"
+  },
+  "name": "Great Axe",
+  "smashing": 300,
+  "dodging": 0,
+  "entropy": 0,
+  "harmony": 0,
+  "hp": 0,
+  "moxie": 0,
+  "hands": 2,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f70f534eaa9ea3174806577"
+  },
+  "name": "Great Sword",
+  "smashing": 300,
+  "dodging": 0,
+  "entropy": 0,
+  "harmony": 0,
+  "hp": 0,
+  "moxie": 0,
+  "hands": 2,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f70f534eaa9ea317480657b"
+  },
+  "name": "Bow",
+  "smashing": 200,
+  "dodging": 100,
+  "entropy": 0,
+  "harmony": 0,
+  "hp": 0,
+  "moxie": 0,
+  "hands": 2,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f70f534eaa9ea317480657a"
+  },
+  "name": "Katana",
+  "smashing": 200,
+  "dodging": 100,
+  "entropy": 0,
+  "harmony": 0,
+  "hp": 0,
+  "moxie": 0,
+  "hands": 2,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f70f534eaa9ea317480657c"
+  },
+  "name": "Long Barrel Musketoon",
+  "smashing": 200,
+  "dodging": 100,
+  "entropy": 0,
+  "harmony": 0,
+  "hp": 0,
+  "moxie": 0,
+  "hands": 2,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f70f534eaa9ea317480657d"
+  },
+  "name": "Short Barrel Musketoon",
+  "smashing": 100,
+  "dodging": 50,
+  "entropy": 0,
+  "harmony": 0,
+  "hp": 0,
+  "moxie": 0,
+  "hands": 1,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f70f534eaa9ea317480657e"
+  },
+  "name": "Chakram",
+  "smashing": 100,
+  "dodging": 50,
+  "entropy": 0,
+  "harmony": 0,
+  "hp": 0,
+  "moxie": 0,
+  "hands": 1,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f70f534eaa9ea317480657f"
+  },
+  "name": "Arcanist's Grimoire",
+  "smashing": 0,
+  "dodging": 0,
+  "entropy": 150,
+  "harmony": 150,
+  "hp": 0,
+  "moxie": 0,
+  "hands": 2,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f70f534eaa9ea3174806580"
+  },
+  "name": "Astrological Globe",
+  "smashing": 0,
+  "dodging": 0,
+  "entropy": 0,
+  "harmony": 300,
+  "hp": 0,
+  "moxie": 0,
+  "hands": 2,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f70f534eaa9ea3174806581"
+  },
+  "name": "Conjurer's Wand",
+  "smashing": 0,
+  "dodging": 0,
+  "entropy": 0,
+  "harmony": 150,
+  "hp": 0,
+  "moxie": 0,
+  "hands": 1,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f70f534eaa9ea3174806582"
+  },
+  "name": "Conjurer's Staff",
+  "smashing": 0,
+  "dodging": 0,
+  "entropy": 0,
+  "harmony": 300,
+  "hp": 0,
+  "moxie": 0,
+  "hands": 2,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f70f534eaa9ea3174806583"
+  },
+  "name": "Thaumaturge Staff",
+  "smashing": 0,
+  "dodging": 0,
+  "entropy": 300,
+  "harmony": 0,
+  "hp": 0,
+  "moxie": 0,
+  "hands": 2,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f70f534eaa9ea3174806586"
+  },
+  "name": "Red Mage Focus",
+  "smashing": 0,
+  "dodging": 0,
+  "entropy": 50,
+  "harmony": 100,
+  "hp": 0,
+  "moxie": 0,
+  "hands": 1,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f70f534eaa9ea3174806585"
+  },
+  "name": "Red Mage Rapier",
+  "smashing": 0,
+  "dodging": 0,
+  "entropy": 150,
+  "harmony": 0,
+  "hp": 0,
+  "moxie": 0,
+  "hands": 1,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f70f534eaa9ea3174806584"
+  },
+  "name": "Thaumaturge Wand",
+  "smashing": 0,
+  "dodging": 0,
+  "entropy": 150,
+  "harmony": 0,
+  "hp": 0,
+  "moxie": 0,
+  "hands": 1,
+  "__v": 0
+}]

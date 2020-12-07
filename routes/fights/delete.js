@@ -1,4 +1,4 @@
-const debug = require("debug")("ybbe:fights/advance");
+const debug = require("debug")("ybbe:fights/delete");
 const express = require("express");
 const router = express.Router({ mergeParams: true });
 
@@ -24,19 +24,15 @@ router.post(
         return next(
           new YbbeError("This isn't your fight.", 403, { id: req.params.id })
         );
-      fight = await fight.advance();
-      fight = await fight
-        .populate("enemies")
-        .populate("attacks")
-        .execPopulate();
-      const toons = await Toon.find({ _id: { $in: fight.toons } });
+      await fight.delete();
+      const toons = await Toon.find({});
       req.app.locals.sse.send(
         {
-          msg: "Advanced to a new phase in the fight",
-          fight: fight,
+          msg: "Deleted the fight",
           toons: toons,
+          fights: await Fight.find({}).populate("enemies").populate("attacks"),
         },
-        "fight-advance"
+        "fight-delete"
       );
       res.send(fight);
     } catch (e) {

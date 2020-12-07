@@ -28,6 +28,13 @@ router.post("/", [auth.isPlayer, validate.toon], async (req, res, next) => {
     let toon = new Toon(whitelisted);
     await toon.resetFight();
     toon = await toon.save();
+    req.app.locals.sse.send(
+      {
+        msg: "Created a new toon",
+        toon: toon,
+      },
+      "toon-created"
+    );
     res.status(201).send(toon);
   } catch (e) {
     debug(e);
@@ -70,7 +77,14 @@ router.put(
       const updated = await Toon.findByIdAndUpdate(req.params.id, whitelisted, {
         new: true,
       });
-      res.send(updated);
+      req.app.locals.sse.send(
+        {
+          msg: "Updated a toon",
+          toon: updated,
+        },
+        "toon-updated"
+      );
+      res.status(201).send(updated);
     } catch (e) {
       if (e.code && e.code === 11000) {
         next(

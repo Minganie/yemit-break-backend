@@ -1,0 +1,37 @@
+[{
+  "_id": {
+    "$oid": "5f70f24f6cb2920e58e642a9"
+  },
+  "name": "Physical",
+  "smashing": 100,
+  "dodging": 100,
+  "entropy": 0,
+  "harmony": 0,
+  "moxie": 0,
+  "wit": 0,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f70f24f6cb2920e58e642aa"
+  },
+  "name": "Magical",
+  "smashing": 0,
+  "dodging": 0,
+  "entropy": 100,
+  "harmony": 100,
+  "moxie": 0,
+  "wit": 0,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5f70f24f6cb2920e58e642ab"
+  },
+  "name": "Leadership",
+  "smashing": 0,
+  "dodging": 0,
+  "entropy": 0,
+  "harmony": 0,
+  "moxie": 100,
+  "wit": 100,
+  "__v": 0
+}]

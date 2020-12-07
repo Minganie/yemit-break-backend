@@ -63,7 +63,7 @@ router.post(
         .toString()}], damaging them for [${Object.keys(zip)
         .map((k) => (zip[k].name === "Miss" ? "Miss" : zip[k].value))
         .toString()}]`;
-      const fight = await Fight.findOne()
+      const fight = await Fight.findOne({ _id: req.params.id })
         .populate("enemies")
         .populate("attacks");
       req.app.locals.sse.send(
