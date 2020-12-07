@@ -26,7 +26,10 @@ const zipper = (total, targets) => {
 const applyDamage = async (action, zip) => {
   try {
     for (const [name, targetValue] of Object.entries(zip)) {
-      if (action.bonusedRoll > targetValue.target.dc) {
+      if (
+        action.name === "Precise Attack" ||
+        action.bonusedRoll > targetValue.target.dc
+      ) {
         targetValue.name = "Hit";
         targetValue.target.current_hp =
           targetValue.target.current_hp - targetValue.value;
@@ -160,7 +163,7 @@ router.post(
         .map((k, i) => (zip[k].name === "Miss" ? "Miss" : zip[k].value))
         .toString();
       const msg = `${from.name} precisely attacks [${tars}] for [${vals}]`;
-      const fight = await Fight.findOne()
+      const fight = await Fight.findOne({ _id: req.params.id })
         .populate("enemies")
         .populate("attacks");
       req.app.locals.sse.send(
