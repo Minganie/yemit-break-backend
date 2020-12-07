@@ -31,6 +31,7 @@ router.post(
           msg: "Deleted the fight",
           toons: toons,
           fights: await Fight.find({}).populate("enemies").populate("attacks"),
+          deleted: req.params.id,
         },
         "fight-delete"
       );

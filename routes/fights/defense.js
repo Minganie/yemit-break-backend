@@ -136,11 +136,11 @@ router.post(
           if (wit > hurt) {
             const retaliation = wit - hurt;
             enemy = await enemy.takeDamage(retaliation);
-            msg += `${coverer.name} is so witty they retaliated against ${enemy.name} for ${retaliation} dmg`;
+            msg += `; ${coverer.name} is so witty they retaliated against ${enemy.name} for ${retaliation} dmg`;
           } else {
             hurt = hurt - wit;
             coverer = await coverer.takeDamage(hurt);
-            msg += `${coverer.name} takes the leftover ${hurt} dmg from ${enemy.name}`;
+            msg += `; ${coverer.name} takes the leftover ${hurt} dmg from ${enemy.name}`;
             modToonId = coverer._id;
           }
         } else {
