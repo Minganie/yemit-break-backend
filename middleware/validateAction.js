@@ -189,6 +189,7 @@ const cover = async (req, res, next) => {
     await toIsAToon(req);
     toonIsntStatused(req.body.to, "is_covered", "covered");
     toonIsntStatused(req.body.from, "is_covered", "covered");
+    toonIsntStatused(req.body.to, "is_covering", "covering");
 
     next();
   } catch (e) {

@@ -25,7 +25,7 @@ router.post(
           new YbbeError("This isn't your fight.", 403, { id: req.params.id })
         );
       await fight.delete();
-      const toons = await Toon.find({});
+      const toons = await Toon.find({}).sort("name");
       req.app.locals.sse.send(
         {
           msg: "Deleted the fight",

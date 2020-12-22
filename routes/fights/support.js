@@ -156,7 +156,7 @@ router.post(
       to = await to.save();
 
       const moxie = await from.moxie;
-      const msg = `${from.name} is guarding ${to.name} (applying ${moxie} moxie)`;
+      const msg = `${from.name} is inspiring ${to.name} to guard themselves (applying ${moxie} moxie)`;
       req.app.locals.sse.send(
         {
           action: "Support: guard",
