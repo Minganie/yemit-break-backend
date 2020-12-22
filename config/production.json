@@ -4,8 +4,8 @@
     "name": "league"
   },
   "certConfig": {
-    "cert": "./cert.pem",
-    "key": "./key.pem"
+    "cert": "/etc/letsencrypt/live/yemit-break.com/fullchain.pem",
+    "key": "/etc/letsencrypt/live/yemit-break.com/privkey.pem"
   },
   "logsConfig": {
     "error": "/var/log/node/error.log",

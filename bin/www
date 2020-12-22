@@ -20,7 +20,6 @@ const httpServer = http.createServer(app);
 const httpsServer = https.createServer({
   key: fs.readFileSync(certConfig.key),
   cert: fs.readFileSync(certConfig.cert),
-  passphrase: certConfig.secret
 }, app);
 
 /**

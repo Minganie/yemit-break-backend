@@ -4,8 +4,8 @@
     "name": "league-dev"
   },
   "certConfig": {
-    "cert": "./cert.pem",
-    "key": "./key.pem"
+    "cert": "./zecert.crt",
+    "key": "./zekey.key"
   },
   "logsConfig": {
     "error": "./error.log",
