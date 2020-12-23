@@ -66,6 +66,8 @@ router.put(
 
       const whitelisted = _.pick(req.body, [
         "name",
+        "gender",
+        "race",
         "physical",
         "magical",
         "leadership",

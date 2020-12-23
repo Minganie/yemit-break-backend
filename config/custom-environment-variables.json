@@ -5,8 +5,5 @@
   },
   "jwtConfig": {
     "secret": "YBBE_JWT_SECRET"
-  },
-  "certConfig": {
-    "secret": "YBBE_CERT_KEY"
   }
 }

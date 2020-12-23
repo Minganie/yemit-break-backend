@@ -1,0 +1,24 @@
+#!/usr/bin/env node
+
+/**
+ * Module dependencies.
+ */
+
+const app = require('../app');
+const config = require("config");
+const debug = require('debug')('ybbe:server');
+const fs = require('fs');
+const http = require('http');
+
+/**
+ * Create server.
+ */
+const httpServer = http.createServer(app);
+
+/**
+ * Listen on provided port, on all network interfaces.
+ */
+const httpPort = process.env.NODE_ENV === "production" ? 80 : 3080;
+httpServer.listen(httpPort, () => {
+  debug(`http server listening on port ${httpPort}`);
+});
