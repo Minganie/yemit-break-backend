@@ -18,6 +18,6 @@ module.exports = (app) => {
   app.use("/api/events", app.locals.sse.init);
 
   app.use("*", (req, res) => {
-    res.sendFile("index.html", { root: path.join(__dirname, "./public/") });
+    res.sendFile("index.html", { root: path.join(__dirname, "../public/") });
   });
 };

@@ -1,5 +1,6 @@
 const debug = require("debug")("ybbe:startup:middleware");
 const express = require("express");
+const helmet = require("helmet");
 const logger = require("morgan");
 const SSE = require("express-sse");
 const requireHttps = require("../middleware/requireHttps");
@@ -9,7 +10,16 @@ module.exports = (app) => {
     debug("In dev, using cors");
     app.use(require("cors")());
   }
-  app.use(require("helmet")());
+  app.use(
+    helmet({
+      contentSecurityPolicy: {
+        directives: {
+          ...helmet.contentSecurityPolicy.getDefaultDirectives(),
+          "script-src": ["'self'"],
+        },
+      },
+    })
+  );
   app.use(require("compression")());
   app.locals.sse = new SSE(["kintoe"]);
   // middleware
