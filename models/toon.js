@@ -20,8 +20,9 @@ const schema = new mongoose.Schema({
   race: {
     type: String,
     enum: [
-      "Hyur",
       "Elezen",
+      "Hyur",
+      "Lalafell",
       "Miqo'te",
       "Roegadyn",
       "Au Ra",
