@@ -46,7 +46,8 @@ const toon = (req, res, next) => {
   const validationRule = {
     name: "sane_string|required",
     gender: "required|in:Male,Female",
-    race: "required|in:Hyur,Elezen,Miqo'te,Roegadyn,Au Ra,Viera,Hrothgar",
+    race:
+      "required|in:Elezen,Hyur,Lalafell,Miqo'te,Roegadyn,Au Ra,Viera,Hrothgar",
     physical: "integer|required|between:0,4",
     magical: "integer|required|between:0,4",
     leadership: "integer|required|between:0,4",
